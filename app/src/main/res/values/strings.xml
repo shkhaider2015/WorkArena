@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">SignUpActivity</string>
+
+
+    <!-- Sign in .xml -->
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="fullname">Full Name</string>
+    <string name="phone">Phone No.</string>
+    <string name="signup">Sign Up</string>
+    <string name="signin">Sign In</string>
+    <string name="warn1">Already have an account ?</string>
+    <string name="warn2">create your account</string>
+
+    <string name="home_screen">Welcome Home Screen</string>
+
+
+
+</resources>

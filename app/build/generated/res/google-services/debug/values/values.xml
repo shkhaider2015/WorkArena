@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">441121182518-2hm26cpgc4o47t6v3r9cplbqfhsa417e.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://workarena-31263.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">441121182518</string>
+    <string name="google_api_key" translatable="false">AIzaSyCBvPvQPpArdccRlOjqj-BVu0l19FW4wLY</string>
+    <string name="google_app_id" translatable="false">1:441121182518:android:3baf4f32379adf89</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCBvPvQPpArdccRlOjqj-BVu0l19FW4wLY</string>
+    <string name="google_storage_bucket" translatable="false">workarena-31263.appspot.com</string>
+    <string name="project_id" translatable="false">workarena-31263</string>
+</resources>

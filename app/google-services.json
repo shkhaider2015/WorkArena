@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "441121182518",
+    "firebase_url": "https://workarena-31263.firebaseio.com",
+    "project_id": "workarena-31263",
+    "storage_bucket": "workarena-31263.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441121182518:android:3baf4f32379adf89",
+        "android_client_info": {
+          "package_name": "com.example.signupactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441121182518-g0ubc9fuac16r9j2g1ve0p5unp9495ll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.signupactivity",
+            "certificate_hash": "a7db67ce89f32905c85874ce39c450387631d727"
+          }
+        },
+        {
+          "client_id": "441121182518-2hm26cpgc4o47t6v3r9cplbqfhsa417e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBvPvQPpArdccRlOjqj-BVu0l19FW4wLY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441121182518-2hm26cpgc4o47t6v3r9cplbqfhsa417e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
