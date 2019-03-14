@@ -1,3 +1,5 @@
-package com.example.android_firebasecustomprofile;
-
-    import android.content.res.Resources;import android.graphics.Bitmap;import android.graphics.drawable.Drawable;import android.support.annotation.CheckResult;import android.support.annotation.DrawableRes;import andr
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>

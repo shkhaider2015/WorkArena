@@ -1,3 +1,16 @@
-package com.bumptech.glide;
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
 
-    import android.content.Context;import android.support.annotation.NonNull;import android.util.Log;import com.example.android_firebasecustomprofile.MyAppGlideModule;import java.
+    <color name="blueDark">#1976d2</color>
+    <color name="blue">#2196f3</color>
+    <color name="blue_some">#43a5f2</color>
+    <color name="blueLight">#64b5f6</color>
+    <color name="red">#ff271c</color>
+
+    <color name="white">#ffffff</color>
+
+
+</resources>

@@ -1,196 +1,170 @@
-package com.example.android_firebasecustomprofile;
-
-    import android.content.Context;import android.content.res.Resources;import android.graphics.Bitmap;import android.graphics.drawable.Drawable;import android.net.Uri;import android.support.annotation.CheckResult;import android.support.annotation.DrawableRes;import android.support.annotation.FloatRange;import android.support.annotation.IntRange;import android.support.annotation.NonNull;import android.support.annotation.Nullable;import android.support.annotation.RawRes;import com.bumptech.glide.Glide;import com.bumptech.glide.Priority;import com.bumptech.glide.RequestBuilder;import com.bumptech.glide.RequestManager;import com.bumptech.glide.TransitionOptions;import com.bumptech.glide.load.DecodeFormat;import com.bumptech.glide.load.Key;import com.bumptech.glide.load.Option;import com.bumptech.glide.load.Transformation;import com.bumptech.glide.load.engine.DiskCacheStrategy;import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;import com.bumptech.glide.request.BaseRequestOptions;import com.bumptech.glide.request.RequestListener;import java.io.File;import java.lang.Class;import java.lang.Cloneable;import java.lang.Deprecated;import java.lang.Integer;import java.lang.Object;import java.lang.Override;import java.lang.SafeVarargs;import java.lang.String;import java.lang.SuppressWarnings;import java.net.URL;
-
-    /*** Contains all public methods from {@link RequestBuilder
-<TranscodeType>}, all options from
-    * {@link com.bumptech.glide.request.RequestOptions} and all generated options from
-    * {@link com.bumptech.glide.annotation.GlideOption} in annotated methods in
-    * {@link com.bumptech.glide.annotation.GlideExtension} annotated classes.
-    *
-    *
-    <p>Generated code, do not modify.
-        *
-        * @see RequestBuilder
-        <TranscodeType>
-            * @see com.bumptech.glide.request.RequestOptions
-            */
-            @SuppressWarnings({
-            "unused",
-            "deprecation"
-            })
-            public class GlideRequest
-            <TranscodeType>extends RequestBuilder
-                <TranscodeType>implements Cloneable {
-                    GlideRequest(@NonNull Class
-                    <TranscodeType>transcodeClass, @NonNull RequestBuilder<?> other) {
-                        super(transcodeClass, other);
-                        }
-
-                        GlideRequest(@NonNull Glide glide, @NonNull RequestManager requestManager,
-                        @NonNull Class
-                        <TranscodeType>transcodeClass, @NonNull Context context) {
-                            super(glide, requestManager ,transcodeClass, context);
-                            }
-
-                            @Override
-                            @CheckResult
-                            @NonNull
-                            protected GlideRequest
-                            <File>getDownloadOnlyRequest() {
-                                return new GlideRequest
-                                <>(File.class, this).apply(DOWNLOAD_ONLY_OPTIONS);
-                                    }
-
-                                    /**
-                                    * @see GlideOptions#sizeMultiplier(float)
-                                    */
-                                    @NonNull
-                                    @CheckResult
-                                    public GlideRequest
-                                    <TranscodeType>sizeMultiplier(@FloatRange(from = 0.0, to = 1.0)
-                                        float value) {
-                                        return (GlideRequest
-                                        <TranscodeType>) super.sizeMultiplier(value);
-                                            }
-
-                                            /**
-                                            * @see
-                                            GlideOptions#useUnlimitedSourceGeneratorsPool(boolean)
-                                            */
-                                            @NonNull
-                                            @CheckResult
-                                            public GlideRequest
-                                            <TranscodeType>useUnlimitedSourceGeneratorsPool(boolean
-                                                flag) {
-                                                return (GlideRequest
-                                                <TranscodeType>)
-                                                    super.useUnlimitedSourceGeneratorsPool(flag);
-                                                    }
-
-                                                    /**
-                                                    * @see GlideOptions#useAnimationPool(boolean)
-                                                    */
-                                                    @NonNull
-                                                    @CheckResult
-                                                    public GlideRequest
-                                                    <TranscodeType>useAnimationPool(boolean flag) {
-                                                        return (GlideRequest
-                                                        <TranscodeType>)
-                                                            super.useAnimationPool(flag);
-                                                            }
-
-                                                            /**
-                                                            * @see
-                                                            GlideOptions#onlyRetrieveFromCache(boolean)
-                                                            */
-                                                            @NonNull
-                                                            @CheckResult
-                                                            public GlideRequest
-                                                            <TranscodeType>
-                                                                onlyRetrieveFromCache(boolean flag)
-                                                                {
-                                                                return (GlideRequest
-                                                                <TranscodeType>)
-                                                                    super.onlyRetrieveFromCache(flag);
-                                                                    }
-
-                                                                    /**
-                                                                    * @see
-                                                                    GlideOptions#diskCacheStrategy(DiskCacheStrategy)
-                                                                    */
-                                                                    @NonNull
-                                                                    @CheckResult
-                                                                    public GlideRequest
-                                                                    <TranscodeType>
-                                                                        diskCacheStrategy(@NonNull
-                                                                        DiskCacheStrategy strategy)
-                                                                        {
-                                                                        return (GlideRequest
-                                                                        <TranscodeType>)
-                                                                            super.diskCacheStrategy(strategy);
-                                                                            }
-
-                                                                            /**
-                                                                            * @see
-                                                                            GlideOptions#priority(Priority)
-                                                                            */
-                                                                            @NonNull
-                                                                            @CheckResult
-                                                                            public GlideRequest
-                                                                            <TranscodeType>
-                                                                                priority(@NonNull
-                                                                                Priority priority) {
-                                                                                return (GlideRequest
-                                                                                <TranscodeType>)
-                                                                                    super.priority(priority);
-                                                                                    }
-
-                                                                                    /**
-                                                                                    * @see
-                                                                                    GlideOptions#placeholder(Drawable)
-                                                                                    */
-                                                                                    @NonNull
-                                                                                    @CheckResult
-                                                                                    public
-                                                                                    GlideRequest
-                                                                                    <TranscodeType>
-                                                                                        placeholder(@Nullable
-                                                                                        Drawable
-                                                                                        drawable) {
-                                                                                        return
-                                                                                        (GlideRequest
-                                                                                        <TranscodeType>
-                                                                                            )
-                                                                                            super.placeholder(drawable);
-                                                                                            }
-
-                                                                                            /**
-                                                                                            * @see
-                                                                                            GlideOptions#placeholder(int)
-                                                                                            */
-                                                                                            @NonNull
-                                                                                            @CheckResult
-                                                                                            public
-                                                                                            GlideRequest
-                                                                                            <TranscodeType>
-                                                                                                placeholder(@DrawableRes
-                                                                                                int
-                                                                                                id)
-                                                                                                {
-                                                                                                return
-                                                                                                (GlideRequest
-                                                                                                <TranscodeType>
-                                                                                                    )
-                                                                                                    super.placeholder(id);
-                                                                                                    }
-
-                                                                                                    /**
-                                                                                                    *
-                                                                                                    @see
-                                                                                                    GlideOptions#fallback(Drawable)
-                                                                                                    */
-                                                                                                    @NonNull
-                                                                                                    @CheckResult
-                                                                                                    public
-                                                                                                    GlideRequest
-                                                                                                    <TranscodeType>
-                                                                                                        fallback(@Nullable
-                                                                                                        Drawable
-                                                                                                        drawable)
-                                                                                                        {
-                                                                                                        return
-                                                                                                        (GlideRequest
-                                                                                                        <TranscodeType>
-                                                                                                            )
-                                                                                                            super.fallback(drawable);
-                                                                                                            }
-
-                                                                                                            /**
-                                                                                                            *
-                                                                                                            @see
-                                                                                                            GlideOptions#fallback(int)
-                                                                                                            */
-                                                                                                            @NonNull
-                                                                                                            @CheckResult
-                                                                                                            pu
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#008577"
+        android:pathData="M0,0h108v108h-108z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M9,0L9,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,0L19,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M29,0L29,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M39,0L39,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M49,0L49,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M59,0L59,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M69,0L69,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M79,0L79,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M89,0L89,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M99,0L99,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,9L108,9"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,19L108,19"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,29L108,29"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,39L108,39"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,49L108,49"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,59L108,59"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,69L108,69"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,79L108,79"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,89L108,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,99L108,99"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,29L89,29"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,39L89,39"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,49L89,49"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,59L89,59"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,69L89,69"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,79L89,79"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M29,19L29,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M39,19L39,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M49,19L49,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M59,19L59,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M69,19L69,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M79,19L79,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+</vector>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SignUpActivity</string>
 
@@ -9,8 +10,8 @@
     <string name="phone">Phone No.</string>
     <string name="signup">Sign Up</string>
     <string name="signin">Sign In</string>
-    <string name="warn1">Already have an account ?</string>
-    <string name="warn2">create your account</string>
+    <string name="warn2">Already have an account ?</string>
+    <string name="warn1">create your account</string>
 
     <string name="home_screen">Welcome Home Screen</string>
 
