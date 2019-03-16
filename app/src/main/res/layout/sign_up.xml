@@ -11,21 +11,32 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="120dp"
-        android:hint="@string/fullname"/>
+        android:hint="@string/fullname"
+        android:inputType="text"/>
     <EditText
         android:id="@+id/email_edittext"
         android:layout_width="260dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:hint="@string/email"/>
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"/>
     <EditText
         android:id="@+id/password_edittext"
         android:layout_width="260dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:hint="@string/password"/>
+        android:hint="@string/password"
+        android:inputType="textPassword"/>
+    <EditText
+        android:id="@+id/phone_edittext"
+        android:layout_width="260dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:hint="@string/phone"
+        android:inputType="phone"/>
 
     <Button
         android:id="@+id/signup_button"

@@ -12,8 +12,18 @@
     <string name="signin">Sign In</string>
     <string name="warn2">Already have an account ?</string>
     <string name="warn1">create your account</string>
-
     <string name="home_screen">Welcome Home Screen</string>
+
+    <string name="email_required">e-mail is required</string>
+    <string name="email_incorrect">not a correct e-mail</string>
+    <string name="password_required">password is required</string>
+    <string name="password_length">password is too short</string>
+
+
+    <string name="fullname_required">full name is required</string>
+    <string name="fullname_length">full name length is too large</string>
+    <string name="phone_required">phone no. is required</string>
+    <string name="phone_length">phone no. should be 11 digits </string>
 
 
 
