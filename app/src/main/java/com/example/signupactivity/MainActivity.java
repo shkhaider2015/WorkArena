@@ -1,5 +1,6 @@
 package com.example.signupactivity;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
     TextView mMATextView;
 
     @Override
@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
         mMATextView = findViewById(R.id.mainActivity_textview);
 
 
@@ -35,16 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(mAuth.getCurrentUser() != null)
         {
-            mMATextView.setVisibility(View.GONE);
-            FragmentSignUp mSignUp = new FragmentSignUp();
-            fragmentTransaction.replace(R.id.fragment_container, mSignUp);
-            fragmentTransaction.commit();
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
 
         }
         else
         {
             mMATextView.setVisibility(View.GONE);
             FragmentSignIn mSignIn = new FragmentSignIn();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, mSignIn);
             fragmentTransaction.commit();
 

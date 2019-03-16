@@ -1,9 +1,12 @@
 package com.example.signupactivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -46,14 +49,25 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         return view;
     }
 
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId())
         {
             case R.id.signin_button:
+
+                userInfo();
+
                 break;
             case R.id.warn1_textview:
+
+                FragmentSignUp signUp = new FragmentSignUp();
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.fragment_container, signUp);
+                transaction.commit();
+
                 break;
         }
 
@@ -103,6 +117,7 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
                         if(task.isSuccessful())
                         {
                             Toast.makeText(getContext(), "Sign in Successfully ", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getActivity(), HomeActivity.class));
                         }
 
                     }

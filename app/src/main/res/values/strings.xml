@@ -26,5 +26,8 @@
     <string name="phone_length">phone no. should be 11 digits </string>
 
 
+    <string name="homeactivitywelcome">Welcome Home Activity</string>
+    <string name="logout">Log Out</string>
+
 
 </resources>
