@@ -30,4 +30,11 @@
     <string name="logout">Log Out</string>
 
 
+    <string name="profile">Profile</string>
+    <string name="portfolio">Portfolio</string>
+    
+    <string name="navigation_drawer_open">Navigation Drawer Open</string>
+    <string name="navigation_drawer_close">Navigation Drawer Close</string>
+
+
 </resources>
