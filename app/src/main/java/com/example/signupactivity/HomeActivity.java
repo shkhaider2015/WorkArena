@@ -3,6 +3,8 @@ package com.example.signupactivity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -86,7 +88,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         switch (menuItem.getItemId())
         {
             case R.id.nav_profile:
-                Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show();
+                FragmentProfile profile = new FragmentProfile();
+                FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.home_container, profile);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             case R.id.nav_portfolio:
                 Toast.makeText(this, "Portfolio Clicked", Toast.LENGTH_SHORT).show();

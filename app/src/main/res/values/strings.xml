@@ -32,9 +32,30 @@
 
     <string name="profile">Profile</string>
     <string name="portfolio">Portfolio</string>
-    
+
     <string name="navigation_drawer_open">Navigation Drawer Open</string>
     <string name="navigation_drawer_close">Navigation Drawer Close</string>
+
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="street_address">Street Address</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="confirm">Confirm</string>
+
+
+    <!-- Error Msg -->
+
+    <string name="email_empty">email is required</string>
+    <string name="email_wrong">email is wrong</string>
+    <string name="fullname_empty">full name is required</string>
+    <string name="country_empty">country is required</string>
+    <string name="city_empty">city is required</string>
+    <string name="phonenumber_empty">phone number is required</string>
+    <string name="address_empty">address is required</string>
+    <string name="phone_wrong">phone number is wrong</string>
+
 
 
 </resources>
