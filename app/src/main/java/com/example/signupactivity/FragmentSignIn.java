@@ -1,6 +1,7 @@
 package com.example.signupactivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "FragmentSignIn";
     EditText mEmail, mPassword;
+    FrameLayout mProgress;
     FirebaseAuth mAuth;
 
     @Nullable
@@ -39,6 +42,8 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         TextView mWarn1 = view.findViewById(R.id.warn1_textview);
         mEmail = view.findViewById(R.id.email_edittext);
         mPassword = view.findViewById(R.id.password_edittext);
+        mProgress = view.findViewById(R.id.fram_progress_sign_in);
+        mProgress.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -57,7 +62,7 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         {
             case R.id.signin_button:
 
-                userInfo();
+                new Async().execute();
 
                 break;
             case R.id.warn1_textview:
@@ -132,6 +137,29 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
                     }
                 });
 
+    }
+
+    private class Async extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            userInfo();
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mProgress.setVisibility(View.GONE);
+        }
     }
 
 
