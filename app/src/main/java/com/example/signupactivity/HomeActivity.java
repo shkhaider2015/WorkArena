@@ -1,6 +1,8 @@
 package com.example.signupactivity;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -10,22 +12,37 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "HomeActivity";
+
     FirebaseAuth mAuth;
+    ImageView mProfilePicNav;
+    TextView mFullNameNav, mEmailNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -35,6 +52,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerLayout = navigationView.inflateHeaderView(R.layout.navbar_header);
+
+        mProfilePicNav = headerLayout.findViewById(R.id.nav_header_profile_pic);
+        mEmailNav = headerLayout.findViewById(R.id.nav_header_profile_email);
+        mFullNameNav = headerLayout.findViewById(R.id.nav_header_profile_name);
+
+
+
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -46,6 +71,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth != null)
+        {
+            new Async().execute();
+        }
     }
 
     @Override
@@ -101,5 +135,60 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return true;
+    }
+
+    private void getNavData()
+    {
+        String userUID = mAuth.getCurrentUser().getUid();
+
+        if(userUID != null)
+        {
+            DatabaseReference users = FirebaseDatabase.getInstance().getReference("Users/" + userUID);
+            DatabaseReference profile = users.child("Profile");
+
+            profile.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    Log.d(TAG, "Datasnapshot : " +dataSnapshot);
+                    Log.d(TAG, "onDataChange.getValue : " +dataSnapshot.getValue());
+                    String name = dataSnapshot.child("full name").getValue().toString();
+                    String email = dataSnapshot.child("email").getValue().toString();
+                    Log.d(TAG, "onDataChange: name :" +name +" email : " + email);
+
+                    Uri uri = Uri.parse(dataSnapshot.child("profilepicurl").getValue().toString());
+                    mFullNameNav.setText(name);
+                    mEmailNav.setText(email);
+                    Picasso.get()
+                            .load(uri)
+                            .placeholder(R.drawable.person_black_18dp)
+                            .into(mProfilePicNav);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private class Async extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            getNavData();
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
     }
 }

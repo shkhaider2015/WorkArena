@@ -10,11 +10,14 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round"
+        android:id="@+id/nav_header_profile_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/person_black_18dp"
+        android:contentDescription="@string/image_view"
         />
     <TextView
+        android:id="@+id/nav_header_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -22,6 +25,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
+        android:id="@+id/nav_header_profile_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"

@@ -36,7 +36,8 @@
         android:id="@+id/profilepic_profile1"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        tools:srcCompat="@tools:sample/avatars"
+        android:src="@drawable/person_black_18dp"
+        android:contentDescription="@string/image_view"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"/>
 

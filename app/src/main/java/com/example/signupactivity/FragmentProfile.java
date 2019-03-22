@@ -1,5 +1,8 @@
 package com.example.signupactivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,11 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 
 public class FragmentProfile extends Fragment {
@@ -28,11 +33,12 @@ public class FragmentProfile extends Fragment {
 
     ImageView mProfilePic;
     Button mEditProfile;
-    TextView mFullName, mEmail, mCountry, mCity, mAddress;
+    TextView mFullName, mEmail, mCountry, mCity, mAddress, mGender;
 
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
     DatabaseReference mRef;
+    DatabaseReference mProfileRef;
     String UID;
 
 
@@ -42,74 +48,86 @@ public class FragmentProfile extends Fragment {
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
 
 
-        mProfilePic = view.findViewById(R.id.profilepic_imageview);
-        mEditProfile = view.findViewById(R.id.edit_profile);
-        mFullName = view.findViewById(R.id.fullname_edittext);
-        mEmail = view.findViewById(R.id.email_edittext);
-        mCountry = view.findViewById(R.id.country);
-        mCity = view.findViewById(R.id.city);
-        mAddress = view.findViewById(R.id.address);
+        mProfilePic = view.findViewById(R.id.frag_prof_pic);
+        mEditProfile = view.findViewById(R.id.frag_prof_edit_profile);
+        mFullName = view.findViewById(R.id.frag_prof_fullname);
+        mEmail = view.findViewById(R.id.frag_prof_email);
+        mCountry = view.findViewById(R.id.frag_prof_country);
+        mCity = view.findViewById(R.id.frag_prof_city);
+        mAddress = view.findViewById(R.id.frag_prof_address);
+        mGender = view.findViewById(R.id.frag_prof_gender);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
 
         UID = mAuth.getCurrentUser().getUid();
         mRef = mDatabase.getReference("Users/" + UID);
+        mProfileRef = mRef.child("Profile");
+
 
         mEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Edit Profile Clikcked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), EditProfileActivity.class));
             }
         });
 
         getData();
 
-        synchronized (view)
-        {
-            try {
-                Log.d(TAG, "View is : waiting ..........");
-                view.wait(4000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
 
         return view;
     }
 
     private void getData()
     {
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Long profile = (Long) dataSnapshot.child("Profile").child("value").getValue();
-                Log.d(TAG, "onDataChange: Profile : " + profile);
+      mRef.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+              Long value = (Long) dataSnapshot.child("Profile").child("value").getValue();
 
-                mFullName.setText(String.valueOf(dataSnapshot.child("email").getValue()));
-                mEmail.setText(String.valueOf(dataSnapshot.child("full name").getValue()));
+              Log.d(TAG, "onDataChange: " + dataSnapshot);
+              Log.d(TAG, "onDataChange.getValue : " + dataSnapshot.getValue());
+              Log.d(TAG, " Value : " + value);
+              Uri uri = Uri.parse(dataSnapshot.child("Profile").child("profilepicurl").getValue().toString());
 
-                if(profile == 0)
-                {
-                    Log.d(TAG, "onDataChange: profile is null");
-                    mCountry.setText("Country : " + String.valueOf(profile));
-                    mCity.setText("City : " + String.valueOf(profile));
-                    mAddress.setText("Address : " + String.valueOf(profile));
-                }
+              if(value == null)
+                  return;
 
-                if(profile != 0)
-                {
-                    Log.d(TAG, "onDataChange: profile is not null");
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                  switch (new Long(value).intValue())
+                  {
+                      case 0:
 
-            }
-        });
+                          mFullName.setText(dataSnapshot.child("full name").getValue().toString());
+                          mEmail.setText(dataSnapshot.child("email").getValue().toString());
 
+                          break;
+                      case 1:
+
+                          Picasso.get()
+                                  .load(uri)
+                                  .placeholder(R.drawable.person_black_18dp)
+                                  .into(mProfilePic);
+
+                          mFullName.setText(dataSnapshot.child("Profile").child("full name").getValue().toString());
+                          mEmail.setText(dataSnapshot.child("Profile").child("email").getValue().toString());
+                          mCountry.setText(dataSnapshot.child("Profile").child("country").getValue().toString());
+                          mCity.setText(dataSnapshot.child("Profile").child("city").getValue().toString());
+                          mAddress.setText(dataSnapshot.child("Profile").child("address").getValue().toString());
+                          mGender.setText(dataSnapshot.child("Profile").child("gender").getValue().toString());
+
+                          break;
+                  }
+              }
+
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+          }
+      });
 
     }
 

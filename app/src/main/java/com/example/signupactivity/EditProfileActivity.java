@@ -3,6 +3,7 @@ package com.example.signupactivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,8 +23,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -59,7 +63,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         mAuth = FirebaseAuth.getInstance();
         mRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(mAuth.getCurrentUser().getUid())
-                .child("profile");
+                .child("Profile");
         mStorageREf = FirebaseStorage.getInstance().getReference("profilepics/" + mAuth.getCurrentUser().getUid() + "/profilepicture.jpg");
 
         Log.d(TAG, "Reference to database : " + mRef);
@@ -77,7 +81,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         mMale = findViewById(R.id.male_radio);
         mFemale = findViewById(R.id.female_radio);
         mFramProgress = findViewById(R.id.frame_progress);
-
         mConfirm.setOnClickListener(this);
         mProfilePicture.setOnClickListener(this);
         mGroupRadio.setOnCheckedChangeListener(this);
@@ -93,8 +96,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId())
         {
             case R.id.confirm_profile1:
-                mFramProgress.setVisibility(View.VISIBLE);
-                uploadUserInformation();
+                new UploadData().execute();
                 break;
             case R.id.profilepic_profile1:
                 showImageChooser();
@@ -105,7 +107,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     private void uploadUserInformation()
     {
-        String fullName, email, country, city, address, phoneNumber;
+        final String fullName, email, country, city, address, phoneNumber;
+        final String URL;
+        URL = URL_ProfilePicture;
 
 
         fullName = mFullName.getText().toString().trim();
@@ -183,23 +187,27 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
         if(mRef != null)
         {
-            mRef.child("fullname").setValue(fullName);
-            mRef.child("email").setValue(email);
-            mRef.child("country").setValue(country);
-            mRef.child("city").setValue(city);
-            mRef.child("address").setValue(address);
-            mRef.child("phone number").setValue(phoneNumber);
-            mRef.child("gender").setValue(gender);
-            mRef.child("profilepic").setValue(URI_ProfilePictures);
+            try
+            {
 
-            mRef.child("value").setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid)
-                {
-                    mFramProgress.setVisibility(View.GONE);
-                    Toast.makeText(EditProfileActivity.this, "Profile Update successfully", Toast.LENGTH_SHORT).show();
-                }
-            });
+                mRef.child("full name").setValue(fullName);
+                mRef.child("email").setValue(email);
+                mRef.child("country").setValue(country);
+                mRef.child("city").setValue(city);
+                mRef.child("address").setValue(address);
+                mRef.child("phone number").setValue(phoneNumber);
+                mRef.child("gender").setValue(gender);
+                mRef.child("profilepicurl").setValue(URL);
+                mRef.child("value").setValue(1);
+
+
+            }catch (Exception e)
+            {
+                System.out.print(e);
+                Log.d(TAG, "uploadUserInformation ERROR: " +e.getMessage());
+            }
+
+
 
         }
         else
@@ -282,5 +290,30 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                         }
                     });
         }
+    }
+
+    private class UploadData extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            uploadUserInformation();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mFramProgress.setVisibility(View.GONE);
+            Toast.makeText(EditProfileActivity.this, "Updated" , Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mFramProgress.setVisibility(View.VISIBLE);
+        }
+
+
     }
 }
