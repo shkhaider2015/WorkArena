@@ -50,6 +50,7 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
+        mDatabase.setPersistenceEnabled(true);
 
         mSignUp.setOnClickListener(this);
         mWarn2.setOnClickListener(this);

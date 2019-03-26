@@ -9,13 +9,13 @@
         android:id="@+id/fram_progress_sign_in"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="190dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_marginTop="300dp"
+            android:layout_gravity="center_horizontal"/>
 
     </FrameLayout>
 

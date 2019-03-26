@@ -35,6 +35,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "HomeActivity";
 
     FirebaseAuth mAuth;
+    FirebaseDatabase mDatabase;
     ImageView mProfilePicNav;
     TextView mFullNameNav, mEmailNav;
 
@@ -48,6 +49,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabase.setPersistenceEnabled(true);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -103,7 +106,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (item.getItemId())
         {
-            case R.id.logout:
+            case R.id.menu_edit_profile:
+                startActivity(new Intent(HomeActivity.this, EditProfileActivity.class));
+                break;
+            case R.id.menu_edit_portfolio:
+                startActivity(new Intent(HomeActivity.this, EditPortfolioActivity.class));
+                break;
+            case R.id.menu_logout:
 
                 mAuth.signOut();
                 startActivity(new Intent(HomeActivity.this, MainActivity.class));
@@ -130,7 +139,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 transaction.commit();
                 break;
             case R.id.nav_portfolio:
-                Toast.makeText(this, "Portfolio Clicked", Toast.LENGTH_SHORT).show();
+                FragmentManager manager1 = getSupportFragmentManager();
+                FragmentTransaction transaction1 = manager1.beginTransaction();
+                transaction1.replace(R.id.home_container, new FragmentPortfolio());
+                transaction1.addToBackStack(null);
+                transaction1.commit();
                 break;
         }
 
@@ -143,7 +156,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         if(userUID != null)
         {
-            DatabaseReference users = FirebaseDatabase.getInstance().getReference("Users/" + userUID);
+            DatabaseReference users = mDatabase.getReference("Users/" + userUID);
             DatabaseReference profile = users.child("Profile");
 
             profile.addValueEventListener(new ValueEventListener() {

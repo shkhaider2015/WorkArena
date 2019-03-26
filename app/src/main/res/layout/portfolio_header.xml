@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/portfolio_header_profile_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@mipmap/ic_launcher"
+        android:src="@mipmap/ic_launcher_round"
+        android:contentDescription="@string/image_view"/>
+
+    <TextView
+        android:id="@+id/portfolio_header_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/name"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/portfolio_header_profession"
+        app:layout_constraintStart_toEndOf="@+id/portfolio_header_profile_pic" />
+
+    <TextView
+        android:id="@+id/portfolio_header_profession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pession"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="192dp"
+        app:layout_constraintStart_toEndOf="@id/portfolio_header_profile_pic"
+        app:layout_constraintRight_toRightOf="@id/portfolio_header_profile_pic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"/>
+
+
+</android.support.constraint.ConstraintLayout>

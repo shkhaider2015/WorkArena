@@ -60,9 +60,15 @@ public class FragmentProfile extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
 
+        if(mDatabase == null)
+        {
+            mDatabase.setPersistenceEnabled(true);
+        }
+
         UID = mAuth.getCurrentUser().getUid();
         mRef = mDatabase.getReference("Users/" + UID);
         mProfileRef = mRef.child("Profile");
+
 
 
         mEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +136,7 @@ public class FragmentProfile extends Fragment {
       });
 
     }
+
 
 
 }

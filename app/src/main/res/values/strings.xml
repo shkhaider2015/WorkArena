@@ -43,6 +43,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="edit_portfolio">Edit Portfolio</string>
     <string name="confirm">Confirm</string>
 
 
@@ -57,6 +58,39 @@
     <string name="address_empty">address is required</string>
     <string name="phone_wrong">phone number is wrong</string>
     <string name="image_view">Image view</string>
+    <string name="company_empty">company name is required</string>
+    <string name="profession_empty">profession is required</string>
+    <string name="about_user_empty">write something about yourself</string>
+
+
+    <!-- Components -->
+
+    <string name="name">Full Name</string>
+    <string name="pession">Pession :P</string>
+    <string name="call">Call</string>
+    <string name="description">About Your Self</string>
+    <string name="value">Value :</string>
+    <string name="condition">On</string>
+
+    <!-- Portfolio -->
+
+    <string name="upload_background_image">upload background image</string>
+    <string name="upload_profile_image">upload profile image</string>
+    <string name="about_yourself">about your self</string>
+    <string name="company_name">Company Name</string>
+    <string name="rating">Rating</string>
+    <string name="feedback">Feedback</string>
+    <string name="profession">Profession</string>
+    <string name="update">update</string>
+
+    <!-- choose option -->
+    <string name="profession_prompt">Choose Profession</string>
+    <string-array name="profession_array">
+        <item>Mechanic</item>
+        <item>Plumber</item>
+        <item>Gardner</item>
+        <item>Carpenter</item>
+    </string-array>
 
 
 

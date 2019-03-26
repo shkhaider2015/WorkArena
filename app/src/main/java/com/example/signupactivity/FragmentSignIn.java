@@ -1,8 +1,10 @@
 package com.example.signupactivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,7 +45,6 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         mEmail = view.findViewById(R.id.email_edittext);
         mPassword = view.findViewById(R.id.password_edittext);
         mProgress = view.findViewById(R.id.fram_progress_sign_in);
-        mProgress.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -61,8 +62,8 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         switch (v.getId())
         {
             case R.id.signin_button:
-
-                new Async().execute();
+                mProgress.setVisibility(View.VISIBLE);
+                userInfo();
 
                 break;
             case R.id.warn1_textview:
@@ -90,12 +91,14 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         {
             mEmail.setError(getString(R.string.email_required));
             mEmail.requestFocus();
+            mProgress.setVisibility(View.GONE);
             return;
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
         {
             mEmail.setError(getString(R.string.email_incorrect));
             mEmail.requestFocus();
+            mProgress.setVisibility(View.GONE);
             return;
         }
 
@@ -103,12 +106,14 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         {
             mPassword.setError(getString(R.string.password_required));
             mPassword.requestFocus();
+            mProgress.setVisibility(View.GONE);
             return;
         }
         if(password.length() < 6)
         {
             mPassword.setError(getString(R.string.password_length));
             mPassword.requestFocus();
+            mProgress.setVisibility(View.GONE);
             return;
         }
 
@@ -122,6 +127,7 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
                         if(task.isSuccessful())
                         {
                             Toast.makeText(getContext(), "Sign in Successfully ", Toast.LENGTH_SHORT).show();
+                            mProgress.setVisibility(View.GONE);
                             startActivity(new Intent(getActivity(), HomeActivity.class));
                         }
 
@@ -132,6 +138,7 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
                     public void onFailure(@NonNull Exception e)
                     {
                         Log.d(TAG, "Sign in onFailure : " + e.getMessage());
+                        mProgress.setVisibility(View.GONE);
                         Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                     }
@@ -139,28 +146,6 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
 
     }
 
-    private class Async extends AsyncTask<Void, Void, Void>
-    {
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            userInfo();
-
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mProgress.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            mProgress.setVisibility(View.GONE);
-        }
-    }
 
 
 }
