@@ -32,8 +32,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener , RadioGroup.OnCheckedChangeListener {
 
@@ -56,25 +58,30 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     Uri URI_ProfilePictures;
     String URL_ProfilePicture;
 
-    long value = 0;
-    String fullName="", email="", phoneNumber="";
+    long value1 = 0;
+    SingletonValue value;
+    String fullName="", email="", phoneNumber="", country="", city="", address="";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
         //Initialize Firebase Objects
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
+        String mUid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         if(mDatabase == null)
         {
             mDatabase.setPersistenceEnabled(true);
         }
         mRef = mDatabase.getReference("Users")
-                .child(mAuth.getCurrentUser().getUid())
+                .child(mUid)
                 .child("Profile");
         mStorageREf = FirebaseStorage.getInstance().getReference("profilepics/" + mAuth.getCurrentUser().getUid() + "/profilepicture.jpg");
+        value = SingletonValue.getInstance(mUid);
+
 
         Log.d(TAG, "Reference to database : " + mRef);
 
@@ -96,6 +103,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         mGroupRadio.setOnCheckedChangeListener(this);
 
 
+
         new StartSync().execute();
         Handler handler = new Handler();
 
@@ -103,8 +111,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void run()
             {
-                updateUIFromRoot();
-
+                    updateUIFromProfile();
             }
         }, 2000);
 
@@ -134,78 +141,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         URL = URL_ProfilePicture;
 
 
-        fullName = mFullName.getText().toString().trim();
+        fullName = mFullName.getText().toString();
         email = mEmail.getText().toString().trim();
         country = mCountry.getText().toString().trim();
-        city = mCity.getText().toString().trim();
-        address = mAddress.getText().toString().trim();
+        city = mCity.getText().toString();
+        address = mAddress.getText().toString();
         phoneNumber = mPhoneNumber.getText().toString().trim();
-
-        if(email.isEmpty())
-        {
-            mEmail.setError(getString(R.string.email_required));
-            mEmail.requestFocus();
-            return;
-
-        }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
-            mEmail.setError(getString(R.string.email_incorrect));
-            mEmail.requestFocus();
-            return;
-
-        }
-        if(fullName.isEmpty())
-        {
-            mFullName.setError(getString(R.string.fullname_required));
-            mFullName.requestFocus();
-            return;
-
-        }
-        if(country.isEmpty())
-        {
-            mCountry.setError(getString(R.string.country_empty));
-            mCountry.requestFocus();
-            return;
-
-        }
-        if(city.isEmpty())
-        {
-            mCity.setError(getString(R.string.city_empty));
-            mCity.requestFocus();
-            return;
-
-        }
-        if(address.isEmpty())
-        {
-            mAddress.setError(getString(R.string.address_empty));
-            mAddress.requestFocus();
-            return;
-
-        }
-        if(phoneNumber.isEmpty())
-        {
-            mPhoneNumber.setError(getString(R.string.phone_required));
-            mPhoneNumber.requestFocus();
-            return;
-
-        }
-        if(phoneNumber.length() < 11)
-        {
-            mPhoneNumber.setError(getString(R.string.phone_length));
-            mPhoneNumber.requestFocus();
-            return;
-        }
-        if(gender == null)
-        {
-            Toast.makeText(this, "Plz select gender", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(URL_ProfilePicture == null)
-        {
-            Toast.makeText(this, "Plz select profile picture", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if(mRef != null)
         {
@@ -220,7 +161,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 mRef.child("phone number").setValue(phoneNumber);
                 mRef.child("gender").setValue(gender);
                 mRef.child("profilepicurl").setValue(URL);
-                mRef.child("value").setValue(1);
+
+
 
 
             }catch (Exception e)
@@ -320,26 +262,46 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     {
         DatabaseReference ref = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid());
 
-        if(!getValue())
-        {
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                    fullName = dataSnapshot.child("full name").getValue().toString();
-                    email = dataSnapshot.child("email").getValue().toString();
-                    phoneNumber = dataSnapshot.child("phone number").getValue().toString();
-                }
+       try
+       {
+               ref.addValueEventListener(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                   {
+                       fullName = Objects.requireNonNull(dataSnapshot.child("Profile").child("full name").getValue()).toString();
+                       email = Objects.requireNonNull(dataSnapshot.child("Profile").child("email").getValue()).toString();
+                       country = Objects.requireNonNull(dataSnapshot.child("Profile").child("country").getValue()).toString();
+                       city = Objects.requireNonNull(dataSnapshot.child("Profile").child("city").getValue()).toString();
+                       phoneNumber = Objects.requireNonNull(dataSnapshot.child("Profile").child("phone number").getValue()).toString();
+                       address = Objects.requireNonNull(dataSnapshot.child("Profile").child("address").getValue()).toString();
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                       Picasso.get()
+                               .load(String.valueOf(dataSnapshot.child("Profile").child("profilepicurl").getValue()))
+                               .placeholder(R.drawable.person_black_18dp)
+                               .into(mProfilePicture);
+                       value1 = 1;
+                   }
 
-                }
-            });
-        }
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError databaseError)
+                   {
+                       Log.e(TAG, "onCancelled: %s", databaseError.toException());
+
+                   }
+               });
+
+
+
+
+
+       }catch (Exception e)
+       {
+           Log.e(TAG, "getData: %s", e);
+       }
 
     }
 
+    /*
     private boolean getValue()
     {
         DatabaseReference reference = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid() + "/Profile/value");
@@ -349,7 +311,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             {
 
                 Log.d(TAG, "onDataChange: " + dataSnapshot);
-                EditProfileActivity.this.value = (long) dataSnapshot.getValue();
+                value.getProfileValue() = (long) dataSnapshot.getValue();
             }
 
             @Override
@@ -364,12 +326,16 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
         return false;
     }
+    */
 
-    private void updateUIFromRoot()
+    private void updateUIFromProfile()
     {
         mFullName.setText(fullName);
         mEmail.setText(email);
         mPhoneNumber.setText(phoneNumber);
+        mCountry.setText(country);
+        mCity.setText(city);
+        mAddress.setText(address);
     }
 
     private class UploadData extends AsyncTask<Void, Void, Void>

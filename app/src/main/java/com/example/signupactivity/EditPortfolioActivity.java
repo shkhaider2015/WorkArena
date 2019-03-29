@@ -1,7 +1,13 @@
 package com.example.signupactivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -17,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,12 +41,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class EditPortfolioActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "EditPortfolioActivity";
-    private final static int CHOOSE_IMAGE = 101;
+    private final static int CHOOSE_PROFILE = 101;
+    private final static int CHOOSE_TIMELINE = 102;
 
     private ImageView  mProfilePic;
     private Spinner mProfession;
@@ -47,20 +57,23 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
     private TextView mUploadTimelinePic;
     private Button mUpdate;
     private ConstraintLayout mTimelinePicSet;
+    private ProgressBar progressBar;
 
     private boolean isProfilePic, isTimelinePic, isProfessionSelected, updateUI;
-    private Uri UriPortfolioPic;
-    private String UrlPortfolioPic;
+    private Uri UriPortfolioPic, UriTimelinePic;
+    private String UrlPortfolioPic, UrlTimelinePic;
     protected String mUid;
-    long value = 0;
+    SingletonValue value;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private FirebaseStorage mStorage;
 
-    Uri profilepicuri;
-    String fullName = null, email = null, country = null, city = null, aboutYou= null, company= null, profession=null;
 
+    Uri profilepicuri;
+    String fullName = null, email = null, country = null, city = null, aboutYou= null, company= null, profession=null, streetAddress="";
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +92,15 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
        mCity = findViewById(R.id.portfolio_edit_city);
        mCompanyName = findViewById(R.id.portfolio_edit_company_name);
        mProfession = findViewById(R.id.portfolio_edit_profession);
+       progressBar = findViewById(R.id.portfolio_edit_progressbar);
 
        mAuth = FirebaseAuth.getInstance();
        mDatabase = FirebaseDatabase.getInstance();
        mStorage = FirebaseStorage.getInstance();
+       context = getApplicationContext();
+       value = SingletonValue.getInstance(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
 
+       progressBar.setVisibility(View.VISIBLE);
        if(mDatabase == null)
        {
            mDatabase.setPersistenceEnabled(true);
@@ -102,18 +119,12 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
        mUid = mAuth.getCurrentUser().getUid();
 
        new AsyncClass().execute();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(updateUI)
-                {
-                    updateUIFromProfile();
-                }
-                else
-                {
-                    updateUIFromProfile();
-                }
+                updateUIFromPortfolio();
             }
         }, 10000);
 
@@ -124,8 +135,11 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
     {
         String fullname, email, country, city, company, profession, aboutUser;
 
-        fullname = mFullName.getText().toString(); email = mEmail.getText().toString(); country = mCountry.getText().toString();
-        city = mCity.getText().toString(); company = mCompanyName.getText().toString();
+        fullname = mFullName.getText().toString();
+        email = mEmail.getText().toString().trim();
+        country = mCountry.getText().toString();
+        city = mCity.getText().toString();
+        company = mCompanyName.getText().toString();
         aboutUser = mAboutUser.getText().toString();
 
         if(fullname.isEmpty())
@@ -166,6 +180,8 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
         }
 
 
+
+
         return true;
     }
 
@@ -177,16 +193,13 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
         switch (v.getId())
         {
             case R.id.portfolio_edit_upload_profile_pic:
-                Toast.makeText(this, "Profile Pic Clicked", Toast.LENGTH_SHORT)
-                        .show();
+                showImageChooser(CHOOSE_PROFILE);
                 break;
             case R.id.portfolio_edit_upload_timeline_pic:
-                Toast.makeText(this, "Timeline Text Clicked", Toast.LENGTH_SHORT)
-                        .show();
+                showImageChooser(CHOOSE_TIMELINE);
                 break;
             case R.id.portfolio_edit_update_button:
-                Toast.makeText(this, "update button Clicked", Toast.LENGTH_SHORT)
-                        .show();
+                new UploadData().execute();
                 break;
         }
 
@@ -207,12 +220,12 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    private void showImageChooser()
+    private void showImageChooser(int requestCode)
     {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "select profile pic"), CHOOSE_IMAGE);
+        startActivityForResult(Intent.createChooser(intent, "select profile pic"), requestCode);
     }
 
     @Override
@@ -220,164 +233,147 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null)
+
+        switch (requestCode)
         {
-            UriPortfolioPic = data.getData();
+            case CHOOSE_PROFILE:
 
-            try
-            {
-                final StorageReference storageRef = FirebaseStorage.getInstance().getReference("profilepics/"+mUid + "/profilepicture.jpg");
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), UriPortfolioPic);
-                mProfilePic.setImageBitmap(bitmap);
+                if(resultCode == RESULT_OK && data != null && data.getData() != null)
+                {
+                    UriPortfolioPic = data.getData();
 
-                storageRef.putFile(UriPortfolioPic)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                UrlPortfolioPic = storageRef.getDownloadUrl().toString();
-                                isProfilePic = true;
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                    try
+                    {
+                        final StorageReference storageRef = FirebaseStorage.getInstance().getReference("profilepics/"+mUid + "/profilepicture.jpg");
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), UriPortfolioPic);
+                        mProfilePic.setImageBitmap(bitmap);
 
-                            }
-                        });
+                        storageRef.putFile(UriPortfolioPic)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        UrlPortfolioPic = storageRef.getDownloadUrl().toString();
+                                        isProfilePic = true;
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: ProfilePic : " +e.getMessage());
 
-                isProfilePic = true;
+                                    }
+                                });
+
+                        isProfilePic = true;
 
 
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                break;
+            case CHOOSE_TIMELINE:
+
+
+                if(resultCode == RESULT_OK && data != null && data.getData() != null)
+                {
+                    UriTimelinePic = data.getData();
+
+                    try
+                    {
+                        final StorageReference storageRef = FirebaseStorage.getInstance().getReference("timelinepic/"+mUid + "/timelinepicture.jpg");
+                        Bitmap tempBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(UriTimelinePic));
+                        Drawable drawable = new BitmapDrawable(getResources(), tempBitmap);
+                        mTimelinePicSet.setBackground(drawable);
+
+                        storageRef.putFile(UriTimelinePic)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        UrlTimelinePic = storageRef.getDownloadUrl().toString();
+                                        isTimelinePic = true;
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: ProfilePic : " +e.getMessage());
+
+                                    }
+                                });
+
+                        isProfilePic = true;
+
+
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+                break;
         }
     }
 
     private void getData()
     {
-        if(getPortfolioValue())
+        System.out.println(value.getPortfolioValue());
+
+        try
         {
-            String mUrl = "Users/" + mUid + "portfolio";
-            DatabaseReference mRef = mDatabase.getReference(mUrl);
-            if(mUrl == null)
-            {
-                Log.d(TAG, "getData: Url is null");
-                return;
-            }
-            mRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                    Log.d(TAG, "onDataChange: " + dataSnapshot);
-                    profilepicuri =(Uri) dataSnapshot.child("profilepicuri").getValue();
-                    aboutYou = dataSnapshot.child("description").getValue().toString();
-                    fullName = dataSnapshot.child("full name").getValue().toString();
-                    email = dataSnapshot.child("email").getValue().toString();
-                    country = dataSnapshot.child("country").getValue().toString();
-                    city = dataSnapshot.child("city").getValue().toString();
-                    updateUI =true;
+                final String mUrl = "Users/" + mUid + "/Portfolio";
+                DatabaseReference mRef = mDatabase.getReference(mUrl);
+
+                mRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        Log.d(TAG, "onDataChange: " + dataSnapshot);
+                        profilepicuri =Uri.parse(String.valueOf(dataSnapshot.child("profilepicuri").getValue()));
+                        aboutYou = String.valueOf(dataSnapshot.child("description").getValue());
+                        fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                        email = String.valueOf(dataSnapshot.child("email").getValue());
+                        country = String.valueOf(dataSnapshot.child("country").getValue());
+                        city = String.valueOf(dataSnapshot.child("city").getValue());
+
+                        updateUI =true;
 
 
-                }
+                    }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-
-
-
-
-        }
-        else
+                    }
+                });
+        }catch (Exception e)
         {
-            String mUrl = "Users/" + mUid + "/Profile";
-            DatabaseReference mRef = mDatabase.getReference(mUrl);
-
-            if(mUrl == null || mRef == null)
-            {
-                Log.d(TAG, "getData: Url is null");
-                return;
-            }
-
-
-            mRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                    Log.d(TAG, "getData from profile :: " + dataSnapshot);
-                    fullName = dataSnapshot.child("full name").getValue().toString();
-                    email = dataSnapshot.child("email").getValue().toString();
-                    country = dataSnapshot.child("country").getValue().toString();
-                    city = dataSnapshot.child("city").getValue().toString();
-                    profilepicuri = Uri.parse(dataSnapshot.child("profilepicurl").getValue().toString());
-                    updateUI = false;
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e(TAG, "onCancelled: %s", databaseError.toException());
-
-                }
-            });
+            Log.e(TAG, "getData:  %s", e);
         }
+
+
+
+
+
 
     }
-
-    private boolean getPortfolioValue()
+    private void updateUIFromPortfolio()
     {
-        String mUrl = "Users/" + mUid + "/Portfolio";
-        DatabaseReference valueRef = mDatabase.getReference(mUrl);
-
-        if(valueRef == null)
-            return false;
-
-
-        valueRef.addValueEventListener(new ValueEventListener() {
+        StorageReference storage = FirebaseStorage.getInstance().getReference("profilepics/" + mUid + "/profilepicture.jpg");
+        storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            public void onSuccess(Uri uri)
             {
-                Log.d(TAG, "getProfileValue : " + dataSnapshot);
-                EditPortfolioActivity.this.value =(long) dataSnapshot.child("value").getValue();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
-                Log.d(TAG, "getProfileValue : " + databaseError.getMessage());
+                Picasso.get()
+                        .load(uri)
+                        .placeholder(R.drawable.person_black_18dp)
+                        .into(mProfilePic);
 
             }
         });
-
-        if(value == 1)
-            return true;
-
-        return false;
-    }
-
-    private void updateUIFromProfile()
-    {
-        Picasso.get()
-                .load(profilepicuri)
-                .placeholder(R.drawable.person_black_18dp)
-                .into(mProfilePic);
-        mFullName.setText(fullName);
-        mEmail.setText(email);
-        mCountry.setText(country);
-        mCity.setText(city);
-    }
-
-    private void updateUIFromPortfolio()
-    {
-        Picasso.get()
-                .load(profilepicuri)
-                .placeholder(R.drawable.person_black_18dp)
-                .into(mProfilePic);
 
         mFullName.setText(fullName);
         mEmail.setText(email);
@@ -385,21 +381,20 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
         mCity.setText(city);
         mAboutUser.setText(aboutYou);
         mCompanyName.setText(company);
+
+        progressBar.setVisibility(View.GONE);
     }
 
     private void loadData()
     {
-        DatabaseReference reference = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid() + "/Portfolio");
+        DatabaseReference reference = mDatabase.getReference("Users/" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "/Portfolio");
 
         if(isProfilePic)
         {
-            DatabaseReference reference1 = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid() + "/Profile/profilepicurl");
+            DatabaseReference reference1 = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid() + "/profilepicurl.jpg");
             reference1.setValue(UrlPortfolioPic);
         }
-        if(!isInformationCorreect())
-        {
-            return;
-        }
+
         if(!isProfessionSelected)
         {
             Toast.makeText(this, "Please select profession", Toast.LENGTH_SHORT)
@@ -414,9 +409,12 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
         reference.child("city").setValue(city);
         reference.child("profession").setValue(profession);
         reference.child("company name").setValue(company);
+        reference.child("condition").setValue(true);
         reference.child("value").setValue(1);
+        reference.child("timelineuri").setValue(UriTimelinePic);
 
     }
+
 
 
     private class AsyncClass extends AsyncTask<Void, Void, Void>
@@ -436,6 +434,26 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+        }
+    }
+
+    private class UploadData extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            loadData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(EditPortfolioActivity.this, "Successfully updated", Toast.LENGTH_SHORT).show();
         }
     }
 

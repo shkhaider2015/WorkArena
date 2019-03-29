@@ -82,6 +82,7 @@
     <string name="feedback">Feedback</string>
     <string name="profession">Profession</string>
     <string name="update">update</string>
+    <string name="empty">Empty</string>
 
     <!-- choose option -->
     <string name="profession_prompt">Choose Profession</string>

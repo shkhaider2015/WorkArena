@@ -3,8 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="250dp"
+    android:id="@+id/header_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+
 
     <ImageView
         android:id="@+id/portfolio_header_profile_pic"
@@ -42,6 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="20dp"/>
+
 
 
 </android.support.constraint.ConstraintLayout>

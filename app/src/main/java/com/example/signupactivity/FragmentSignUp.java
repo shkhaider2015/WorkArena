@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,12 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
     EditText mFullName, mEmail, mPassword, mPhone;
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
+    private ProgressBar mProgressbar;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
 
         View view = inflater.inflate(R.layout.sign_up, container, false);
 
@@ -47,13 +50,21 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         mEmail = view.findViewById(R.id.email_edittext);
         mPassword = view.findViewById(R.id.password_edittext);
         mPhone = view.findViewById(R.id.phone_edittext);
+        mProgressbar = view.findViewById(R.id.signup_progressbar);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-        mDatabase.setPersistenceEnabled(true);
+
+        if(mDatabase == null)
+        {
+            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+            mDatabase.setPersistenceEnabled(true);
+        }
+
 
         mSignUp.setOnClickListener(this);
         mWarn2.setOnClickListener(this);
+
 
         return view;
     }
@@ -65,6 +76,7 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         {
             case R.id.signup_button:
 
+                mProgressbar.setVisibility(View.VISIBLE);
                 userInfo();
 
                 break;
@@ -75,6 +87,7 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                 assert manager != null;
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.fragment_container, signIn);
+                transaction.addToBackStack(null);
                 transaction.commit();
 
                 break;
@@ -95,12 +108,14 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         {
             mFullName.setError(getString(R.string.fullname_required));
             mFullName.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
         if(fullName.length() > 20)
         {
             mFullName.setError(getString(R.string.fullname_length));
             mFullName.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
 
@@ -108,12 +123,14 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         {
             mEmail.setError(getString(R.string.email_required));
             mEmail.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
         {
             mEmail.setError(getString(R.string.email_incorrect));
             mEmail.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
 
@@ -121,24 +138,28 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         {
             mPassword.setError(getString(R.string.password_required));
             mPassword.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
         if(password.length() < 6)
         {
             mPassword.setError(getString(R.string.password_length));
             mPassword.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
         if(phone.isEmpty())
         {
             mPhone.setError(getString(R.string.phone_required));
             mPhone.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
         if(phone.length() != 11)
         {
             mPhone.setError(getString(R.string.phone_length));
             mPhone.requestFocus();
+            mProgressbar.setVisibility(View.GONE);
             return;
         }
 
@@ -154,7 +175,7 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                             try {
 
                                     DatabaseReference usersRef = mDatabase.getReference("Users");
-                                    DatabaseReference userRef = usersRef.child(mAuth.getCurrentUser().getUid());
+                                    DatabaseReference userRef = usersRef.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
 
 
                                     userRef.child("full name").setValue(fullName);
@@ -172,19 +193,22 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
 
 
                                     startActivity(new Intent(getActivity(), HomeActivity.class));
-                                    getActivity().finish();
+                                    Objects.requireNonNull(getActivity()).finish();
 
 
                             }
                             catch (NullPointerException e)
                             {
+
                                 Log.d(TAG, "NullPOinter Exception : " + e.getMessage());
 
                             }
                             catch (Exception e)
                             {
+
                                 Log.d(TAG, "onComplete Exception: " +e.getMessage());
                             }
+
 
 
                         }
@@ -198,9 +222,12 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                             }
                             else
                             {
-                                Log.d(TAG, "onComplete: Error : Something goes wrong" + task.getException().getMessage());
+                                Log.d(TAG, "onComplete: Error : Something goes wrong" + Objects.requireNonNull(task.getException()).getMessage());
                             }
+                            mProgressbar.setVisibility(View.GONE);
                         }
+
+                        mProgressbar.setVisibility(View.GONE);
 
                     }
                 })
@@ -208,6 +235,7 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                     @Override
                     public void onFailure(@NonNull Exception e)
                     {
+                        mProgressbar.setVisibility(View.GONE);
 
                         Log.d(TAG, "onFailure: "+e.getMessage());
                         Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT)

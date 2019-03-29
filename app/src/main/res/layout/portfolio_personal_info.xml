@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -26,9 +27,10 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/portfolio_personal_info_fullname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/empty"
                 android:textSize="20sp"
                 android:layout_marginStart="50dp"/>
 
@@ -45,13 +47,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/email"
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/portfolio_personal_info_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/empty"
                 android:textSize="20sp"
                 android:layout_marginStart="50dp"/>
 
@@ -68,13 +71,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/country"
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/portfolio_personal_info_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/empty"
                 android:textSize="20sp"
                 android:layout_marginStart="50dp"/>
 
@@ -91,13 +95,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/city"
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/portfolio_personal_info_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/empty"
                 android:textSize="20sp"
                 android:layout_marginStart="50dp"/>
 
@@ -114,13 +119,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/profession"
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/portfolio_personal_info_profession"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/empty"
                 android:textSize="20sp"
                 android:layout_marginStart="50dp"/>
 
@@ -137,13 +143,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/street_address"
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/portfolio_personal_info_streetaddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/empty"
                 android:textSize="20sp"
                 android:layout_marginStart="50dp"/>
 

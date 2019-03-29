@@ -55,6 +55,12 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //mProgress.setVisibility(View.GONE);
+    }
 
     @Override
     public void onClick(View v) {
@@ -70,8 +76,10 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
 
                 FragmentSignUp signUp = new FragmentSignUp();
                 FragmentManager manager = getFragmentManager();
+                assert manager != null;
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.fragment_container, signUp);
+                transaction.addToBackStack(null);
                 transaction.commit();
 
                 break;
@@ -139,7 +147,7 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
                     {
                         Log.d(TAG, "Sign in onFailure : " + e.getMessage());
                         mProgress.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "please register your account", Toast.LENGTH_SHORT).show();
 
                     }
                 });

@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/portfolio_description_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/call"
@@ -42,6 +42,7 @@
         android:layout_marginBottom="20dp">
 
         <TextView
+            android:id="@+id/portfolio_description_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/value"
@@ -49,6 +50,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"/>
         <TextView
+            android:id="@+id/portfolio_description_condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/condition"

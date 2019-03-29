@@ -30,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "HomeActivity";
@@ -38,6 +40,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseDatabase mDatabase;
     ImageView mProfilePicNav;
     TextView mFullNameNav, mEmailNav;
+    Boolean isValue = false;
+    SingletonValue value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-        mDatabase.setPersistenceEnabled(true);
+        value = SingletonValue.getInstance(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+
+        if(mDatabase == null)
+        {
+            mDatabase = FirebaseDatabase.getInstance();
+            mDatabase.setPersistenceEnabled(true);
+        }
+
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -70,6 +81,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
 
 
 
@@ -113,8 +125,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, EditPortfolioActivity.class));
                 break;
             case R.id.menu_logout:
-
+                value.setNull();
+                mDatabase = null;
                 mAuth.signOut();
+
                 startActivity(new Intent(HomeActivity.this, MainActivity.class));
                 finish();
 
@@ -150,47 +164,139 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    private void getNavData()
+    private void getNavDataFromProfile() {
+
+        try {
+
+            String userUID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+            if (userUID != null)
+            {
+                DatabaseReference users = mDatabase.getReference("Users/" + userUID);
+                DatabaseReference profile = users.child("Profile");
+
+                profile.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            Log.d(TAG, "Datasnapshot : " + dataSnapshot);
+                            Log.d(TAG, "onDataChange.getValue : " + dataSnapshot.getValue());
+                            String name = Objects.requireNonNull(dataSnapshot.child("full name").getValue()).toString();
+                            String email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
+                            Log.d(TAG, "onDataChange: name :" + name + " email : " + email);
+
+                            Uri uri = Uri.parse(Objects.requireNonNull(dataSnapshot.child("profilepicurl").getValue()).toString());
+                            mFullNameNav.setText(name);
+                            mEmailNav.setText(email);
+                            Picasso.get()
+                                    .load(uri)
+                                    .placeholder(R.drawable.person_black_18dp)
+                                    .into(mProfilePicNav);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            else
+            {
+                Log.d(TAG, "HomeActivity / getNavData: Uid is null ");
+            }
+
+        } catch (Exception e) {
+            Log.d(TAG, "HomeActivity / getNavData: / Exception " + e.getMessage());
+        }
+
+    }
+    private void getNavDataFromUsers()
     {
-        String userUID = mAuth.getCurrentUser().getUid();
-
-        if(userUID != null)
+        try
         {
-            DatabaseReference users = mDatabase.getReference("Users/" + userUID);
-            DatabaseReference profile = users.child("Profile");
-
-            profile.addValueEventListener(new ValueEventListener() {
+            DatabaseReference reference = mDatabase.getReference("Users/")
+                    .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+            reference.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    Log.d(TAG, "onDataChange: " + dataSnapshot);
 
-                    Log.d(TAG, "Datasnapshot : " +dataSnapshot);
-                    Log.d(TAG, "onDataChange.getValue : " +dataSnapshot.getValue());
-                    String name = dataSnapshot.child("full name").getValue().toString();
-                    String email = dataSnapshot.child("email").getValue().toString();
-                    Log.d(TAG, "onDataChange: name :" +name +" email : " + email);
+                    String name = Objects.requireNonNull(dataSnapshot.child("full name").getValue()).toString();
+                    String email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
 
-                    Uri uri = Uri.parse(dataSnapshot.child("profilepicurl").getValue().toString());
                     mFullNameNav.setText(name);
                     mEmailNav.setText(email);
-                    Picasso.get()
-                            .load(uri)
-                            .placeholder(R.drawable.person_black_18dp)
-                            .into(mProfilePicNav);
+                    mProfilePicNav.setImageResource(R.drawable.person_black_18dp);
+
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
 
                 }
             });
+
+        }catch (NullPointerException e)
+        {
+            Log.e(TAG, "getNavDataFromUsers: $s", e);
+        }catch (Exception e)
+        {
+            Log.e(TAG, "getNavDataFromUsers: $s", e);
         }
+    }
+
+    private void getProfileValue()
+    {
+        try
+        {
+            DatabaseReference reference = mDatabase.
+                    getReference("Users" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "/Profile/value");
+
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    if(((long) dataSnapshot.getValue()) == 0)
+                    {
+                        isValue = false;
+                    }
+                    else
+                    {
+                        isValue = true;
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+                    Log.d(TAG, "onCancelled: database Error " + databaseError.getMessage());
+
+                }
+            });
+        }catch (Exception e)
+        {
+            Log.e(TAG, "getProfileValue: %s", e);
+
+        }
+
     }
 
     private class Async extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected Void doInBackground(Void... voids) {
-            getNavData();
+
+            if(value.getProfileValue() == 1)
+            {
+                getNavDataFromProfile();
+            }
+            else
+            {
+                getNavDataFromUsers();
+            }
             return null;
         }
 
