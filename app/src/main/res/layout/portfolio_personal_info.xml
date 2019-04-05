@@ -143,11 +143,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/street_address"
+                android:text="@string/company_name"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/portfolio_personal_info_streetaddress"
+                android:id="@+id/portfolio_personal_info_company_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"

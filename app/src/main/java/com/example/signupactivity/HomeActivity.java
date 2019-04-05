@@ -3,6 +3,7 @@ package com.example.signupactivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -17,10 +18,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,8 +36,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
@@ -40,8 +52,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseDatabase mDatabase;
     ImageView mProfilePicNav;
     TextView mFullNameNav, mEmailNav;
-    Boolean isValue = false;
-    SingletonValue value;
+    ProgressBar mProgressbarNav, hProgressbar;
+    Spinner mSpinner;
+    String name, email, profileurl;
+    boolean isProfilePic = false;
+    ListView listView;
+    ArrayAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +70,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-        value = SingletonValue.getInstance(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
 
-        if(mDatabase == null)
-        {
+        if (mDatabase == null) {
             mDatabase = FirebaseDatabase.getInstance();
             mDatabase.setPersistenceEnabled(true);
         }
@@ -71,6 +85,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mProfilePicNav = headerLayout.findViewById(R.id.nav_header_profile_pic);
         mEmailNav = headerLayout.findViewById(R.id.nav_header_profile_email);
         mFullNameNav = headerLayout.findViewById(R.id.nav_header_profile_name);
+        mProgressbarNav = headerLayout.findViewById(R.id.nav_header_progressbar);
+        hProgressbar = findViewById(R.id.home_activity_progressbar);
+        mSpinner = findViewById(R.id.spinner);
 
 
 
@@ -82,6 +99,51 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.profession_array, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(arrayAdapter);
+        listView = findViewById(R.id.users_list);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String data = String.valueOf(parent.getItemAtPosition(position)).trim();
+                Log.d(TAG, "onItemSelected: " + data);
+                Log.d(TAG, "onItemSelected: Item Id -->> " + id);
+                if(id == 0)
+                {
+                    Toast.makeText(HomeActivity.this, "This is exclude", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    hProgressbar.setVisibility(View.VISIBLE);
+                    Toast.makeText(HomeActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+
+                    final ArrayAdapter listAdapter = new ArrayAdapter<String>(HomeActivity.this, R.layout.list_item, usersData(data));
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hProgressbar.setVisibility(View.GONE);
+
+                            listView.setAdapter(listAdapter);
+
+                        }
+                    }, 3000);
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                Toast.makeText(HomeActivity.this, "Nothing Selected", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
 
@@ -93,8 +155,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         if(mAuth != null)
         {
+            mProgressbarNav.setVisibility(View.VISIBLE);
             new Async().execute();
         }
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run()
+            {
+                updateUINavHeader();
+            }
+        }, 6000);
+
     }
 
     @Override
@@ -125,7 +198,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(HomeActivity.this, EditPortfolioActivity.class));
                 break;
             case R.id.menu_logout:
-                value.setNull();
                 mDatabase = null;
                 mAuth.signOut();
 
@@ -164,80 +236,90 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    private void getNavDataFromProfile() {
+    private void updateUINavHeader()
+    {
+        mFullNameNav.setText(name);
+        mEmailNav.setText(email);
 
-        try {
-
-            String userUID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-
-            if (userUID != null)
-            {
-                DatabaseReference users = mDatabase.getReference("Users/" + userUID);
-                DatabaseReference profile = users.child("Profile");
-
-                profile.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            Log.d(TAG, "Datasnapshot : " + dataSnapshot);
-                            Log.d(TAG, "onDataChange.getValue : " + dataSnapshot.getValue());
-                            String name = Objects.requireNonNull(dataSnapshot.child("full name").getValue()).toString();
-                            String email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
-                            Log.d(TAG, "onDataChange: name :" + name + " email : " + email);
-
-                            Uri uri = Uri.parse(Objects.requireNonNull(dataSnapshot.child("profilepicurl").getValue()).toString());
-                            mFullNameNav.setText(name);
-                            mEmailNav.setText(email);
-                            Picasso.get()
-                                    .load(uri)
-                                    .placeholder(R.drawable.person_black_18dp)
-                                    .into(mProfilePicNav);
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-            else
-            {
-                Log.d(TAG, "HomeActivity / getNavData: Uid is null ");
-            }
-
-        } catch (Exception e) {
-            Log.d(TAG, "HomeActivity / getNavData: / Exception " + e.getMessage());
+        if(isProfilePic)
+        {
+            Log.d(TAG, "updateUINavHeader: URL is not NULL !!!!");
+            Picasso.get()
+                    .load(profileurl)
+                    .placeholder(R.drawable.person_black_18dp)
+                    .into(mProfilePicNav);
+        }
+        else
+        {
+            Log.d(TAG, "updateUINavHeader: URL is NULL");
+            mProfilePicNav.setImageResource(R.drawable.person_black_18dp);
         }
 
+
+        mProgressbarNav.setVisibility(View.GONE);
     }
+
     private void getNavDataFromUsers()
     {
+
         try
         {
-            DatabaseReference reference = mDatabase.getReference("Users/")
-                    .child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-            reference.addValueEventListener(new ValueEventListener() {
+            DatabaseReference reference = mDatabase.getReference("Users")
+                    .child(String.valueOf(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()));
+
+            reference.addValueEventListener(new ValueEventListener()
+            {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                    Log.d(TAG, "onDataChange: " + dataSnapshot);
+                    Log.d(TAG, "onDataChange: users reference " + dataSnapshot);
 
-                    String name = Objects.requireNonNull(dataSnapshot.child("full name").getValue()).toString();
-                    String email = Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString();
-
-                    mFullNameNav.setText(name);
-                    mEmailNav.setText(email);
-                    mProfilePicNav.setImageResource(R.drawable.person_black_18dp);
+                    name = String.valueOf(dataSnapshot.child("full name").getValue());
+                    email = String.valueOf(dataSnapshot.child("email").getValue());
+                    isProfilePic = Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfilePic").getValue()));
 
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError)
                 {
+                    Log.e(TAG, "onCancelled: %s", databaseError.toException());
 
                 }
             });
+
+            reference.keepSynced(true);
+
+            StorageReference reference1 = FirebaseStorage
+                    .getInstance()
+                    .getReference("profilepics/" + mAuth.getCurrentUser().getUid() + "/profilepicture.jpg");
+
+            if(isProfilePic)
+            {
+                reference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri)
+                    {
+                        Log.d(TAG, "onSuccess: Uri : " +uri);
+                        if(uri != null)
+                        {
+                            profileurl = String.valueOf(uri);
+                        }
+                        Log.d(TAG, "Uri is null : ----->>");
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e)
+                            {
+                                Log.e(TAG, "onFailure: Profile Pic failure %s", e);
+
+                            }
+                        });
+
+
+            }
+
 
         }catch (NullPointerException e)
         {
@@ -248,39 +330,45 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void getProfileValue()
+    private ArrayList<String> usersData(final String data)
     {
-        try
-        {
-            DatabaseReference reference = mDatabase.
-                    getReference("Users" + Objects.requireNonNull(mAuth.getCurrentUser()).getUid() + "/Profile/value");
+        final ArrayList<String> users = new ArrayList<>();
 
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+        DatabaseReference usersRef = mDatabase.getReference("Users");
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
                 {
-                    if(((long) dataSnapshot.getValue()) == 0)
+                    Log.d(TAG, "onDataChange: name = " + name);
+                    Log.d(TAG, "onDataChange: datasnapshot --> " + dataSnapshot1);
+
+                    String profession = String.valueOf(dataSnapshot1.child("Portfolio").child("profession").getValue()).trim();
+                    Log.d(TAG, "onDataChange: profession : " + profession);
+                    if(data.equals(profession))
                     {
-                        isValue = false;
+                        Log.d(TAG, "onDataChange: compare : " + data);
+                        String name = String.valueOf(dataSnapshot1.child("full name").getValue());
+                        users.add(name);
                     }
-                    else
-                    {
-                        isValue = true;
-                    }
+
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError)
-                {
-                    Log.d(TAG, "onCancelled: database Error " + databaseError.getMessage());
+            }
 
-                }
-            });
-        }catch (Exception e)
-        {
-            Log.e(TAG, "getProfileValue: %s", e);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
 
-        }
+            }
+        };
+        usersRef.addValueEventListener(valueEventListener);
+
+
+
+        return users;
 
     }
 
@@ -289,14 +377,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected Void doInBackground(Void... voids) {
 
-            if(value.getProfileValue() == 1)
-            {
-                getNavDataFromProfile();
-            }
-            else
-            {
                 getNavDataFromUsers();
-            }
+
             return null;
         }
 

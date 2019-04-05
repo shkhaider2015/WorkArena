@@ -87,6 +87,7 @@
     <!-- choose option -->
     <string name="profession_prompt">Choose Profession</string>
     <string-array name="profession_array">
+        <item>Select Category</item>
         <item>Mechanic</item>
         <item>Plumber</item>
         <item>Gardner</item>

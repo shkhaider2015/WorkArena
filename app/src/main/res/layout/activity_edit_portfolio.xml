@@ -96,7 +96,7 @@
                app:layout_constraintEnd_toEndOf="parent"
                android:orientation="vertical">
 
-               <EditText
+               <TextView
                    android:id="@+id/portfolio_edit_full_name"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                    android:autofillHints="@string/fullname"
                    />
 
-               <EditText
+               <TextView
                    android:id="@+id/portfolio_edit_email"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                    android:hint="@string/email"
                    android:autofillHints="@string/email"/>
 
-               <EditText
+               <TextView
                    android:id="@+id/portfolio_edit_country"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                    android:hint="@string/country"
                    android:autofillHints="@string/country"/>
 
-               <EditText
+               <TextView
                    android:id="@+id/portfolio_edit_city"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"

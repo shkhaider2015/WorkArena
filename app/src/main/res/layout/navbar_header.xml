@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="170dp"
@@ -9,26 +9,47 @@
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/nav_header_profile_pic"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/person_black_18dp"
-        android:contentDescription="@string/image_view"
-        />
-    <TextView
-        android:id="@+id/nav_header_profile_name"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="@string/profile"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/nav_header_profile_email"
+        <ImageView
+            android:id="@+id/nav_header_profile_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/person_black_18dp"
+            android:contentDescription="@string/image_view"
+            />
+        <TextView
+            android:id="@+id/nav_header_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/profile"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <TextView
+            android:id="@+id/nav_header_profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/nav_header_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/email"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 
-</LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

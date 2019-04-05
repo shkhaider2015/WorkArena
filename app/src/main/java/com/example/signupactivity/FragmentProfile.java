@@ -3,6 +3,7 @@ package com.example.signupactivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,13 +20,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -43,9 +48,10 @@ public class FragmentProfile extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
     DatabaseReference mRef;
-    DatabaseReference mProfileRef;
-    String UID;
-    SingletonValue value;
+    StorageReference mProfileRef;
+    String UID, urlPic;
+    String fullName, email, country, city, streetAddress, gender;
+    boolean isProfilePic = false;
 
 
     @Nullable
@@ -66,17 +72,15 @@ public class FragmentProfile extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-        UID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-        value = SingletonValue.getInstance(UID);
-
-        if(mDatabase == null)
-        {
-            mDatabase.setPersistenceEnabled(true);
-        }
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        assert firebaseUser != null;
+        UID = firebaseUser.getUid();
 
 
         mRef = mDatabase.getReference("Users/" + UID);
-        mProfileRef = mRef.child("Profile");
+        mRef.keepSynced(true);
+        mProfileRef = FirebaseStorage.getInstance().getReference("profilepics/" + UID + "/profilepicture.jpg");
+
 
 
 
@@ -87,82 +91,137 @@ public class FragmentProfile extends Fragment {
             }
         });
 
-        getData();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-
-            }
-        }, 2000);
 
 
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        progressBar.setVisibility(View.VISIBLE);
+        new AsyncData().execute();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateUI();
+            }
+        }, 3000);
+    }
+
     private void getData()
     {
         progressBar.setVisibility(View.VISIBLE);
-        try {
+        try
+        {
 
-
-            mRef.addValueEventListener(new ValueEventListener() {
+            mRef.addValueEventListener(new ValueEventListener()
+            {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
 
-                    Log.d(TAG, "onDataChange: " + dataSnapshot);
+                    Log.d(TAG, "onDataChange: FragmentProfile" + dataSnapshot);
                     Log.d(TAG, "onDataChange.getValue : " + dataSnapshot.getValue());
-                    Log.d(TAG, " Value : " + value.getProfileValue());
 
-                    if (value.getProfileValue() == 1)
+                    Log.d(TAG, "onDataChange: Boolean Data " + String.valueOf(Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfile").getValue()))));
+
+                    if(Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfile").getValue())))
                     {
-                        Uri uri = Uri.parse(Objects.requireNonNull(dataSnapshot.child("Profile").child("profilepicurl").getValue()).toString());
-
-                        Picasso.get()
-                                .load(uri)
-                                .placeholder(R.drawable.person_black_18dp)
-                                .into(mProfilePic);
-
-                        mFullName.setText(Objects.requireNonNull(dataSnapshot.child("Profile").child("full name").getValue()).toString());
-                        mEmail.setText(Objects.requireNonNull(dataSnapshot.child("Profile").child("email").getValue()).toString());
-                        mCountry.setText(Objects.requireNonNull(dataSnapshot.child("Profile").child("country").getValue()).toString());
-                        mCity.setText(Objects.requireNonNull(dataSnapshot.child("Profile").child("city").getValue()).toString());
-                        mAddress.setText(Objects.requireNonNull(dataSnapshot.child("Profile").child("address").getValue()).toString());
-                        mGender.setText(Objects.requireNonNull(dataSnapshot.child("Profile").child("gender").getValue()).toString());
-                    } else if (value.getProfileValue() == 0)
-                    {
-                        mFullName.setText(Objects.requireNonNull(dataSnapshot.child("full name").getValue()).toString());
-                        mEmail.setText(Objects.requireNonNull(dataSnapshot.child("email").getValue()).toString());
+                        fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                        email = String.valueOf(dataSnapshot.child("email").getValue());
+                        country=String.valueOf(dataSnapshot.child("Profile").child("country").getValue());
+                        city=String.valueOf(dataSnapshot.child("Profile").child("city").getValue());
+                        streetAddress=String.valueOf(dataSnapshot.child("Profile").child("address").getValue());
+                        gender=String.valueOf(dataSnapshot.child("Profile").child("gender").getValue());
                     }
                     else
                     {
-                        Log.d(TAG, "onDataChange: Error  Value =  null");
+                        fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                        email = String.valueOf(dataSnapshot.child("email").getValue());
                     }
+                        isProfilePic = Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfilePic").getValue()));
+
                 }
 
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError)
                 {
-
                     Log.e(TAG, "onCancelled: %s", databaseError.toException());
 
                 }
             });
-            progressBar.setVisibility(View.GONE);
+
 
         }catch (Exception e)
         {
-            progressBar.setVisibility(View.GONE);
             Log.e(TAG, "getData: %s", e);
         }
 
+    }
+
+    private void updateUI()
+    {
+
+        mFullName.setText(fullName);
+        mEmail.setText(email);
+        mCountry.setText(country);
+        mCity.setText(city);
+        mAddress.setText(streetAddress);
+        mGender.setText(gender);
+
+
+
+        if(isProfilePic)
+        {
+            mProfileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+
+
+                    Picasso.get()
+                            .load(uri)
+                            .placeholder(R.drawable.person_black_18dp)
+                            .into(mProfilePic);
+
+                }
+            });
+
+        }
+        else
+        {
+            mProfilePic.setImageResource(R.drawable.person_black_18dp);
+        }
+
+
         progressBar.setVisibility(View.GONE);
+
 
     }
 
 
+    private class AsyncData extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            getData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
 
 }

@@ -44,15 +44,18 @@ public class FragmentPortfolio extends Fragment {
     //Description Data
     TextView dDescription, dValue, dCondition; Button dCall;
     //Personal Info Data
-    TextView pFullName, pEmail, pCountry, pCity, pProfession, pStreetAddress;
+    TextView pFullName, pEmail, pCountry, pCity, pProfession, pCompanyName;
     //Feedback Data
     EditText fFeedback; Button fConfirm;
 
-    String mUID; SingletonValue value; boolean isValue;
+    boolean isProfilePic = false;
+
+    String mUID;
 
     FirebaseAuth mAuth; FirebaseDatabase mDatabase;
 
-    String fullName ="", profession ="", urlProfilePic , description ="", email ="", country ="", city =""; boolean condition=false;
+    String fullName ="", profession ="", urlProfilePic , description ="", email ="", country ="", city ="", companyName="";
+    boolean condition=false;
 
     @Nullable
     @Override
@@ -83,7 +86,7 @@ public class FragmentPortfolio extends Fragment {
         pCountry = mPortfolioPersonalInfo.findViewById(R.id.portfolio_personal_info_country);
         pCity = mPortfolioPersonalInfo.findViewById(R.id.portfolio_personal_info_city);
         pProfession = mPortfolioPersonalInfo.findViewById(R.id.portfolio_personal_info_profession);
-        pStreetAddress = mPortfolioPersonalInfo.findViewById(R.id.portfolio_personal_info_streetaddress);
+        pCompanyName = mPortfolioPersonalInfo.findViewById(R.id.portfolio_personal_info_company_name);
 
         //feedback data initialize
 
@@ -94,7 +97,6 @@ public class FragmentPortfolio extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         mUID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-        value = SingletonValue.getInstance(mUID);
         mDatabase = FirebaseDatabase.getInstance();
         if(mDatabase == null)
         {
@@ -128,7 +130,7 @@ public class FragmentPortfolio extends Fragment {
             pEmail.setText(email);
             pCountry.setText(country);
             pCity.setText(city);
-            pStreetAddress.setText("Nothing");
+            pCompanyName.setText(companyName);
             pProfession.setText(profession);
 
         progressBar.setVisibility(View.GONE);
@@ -144,14 +146,31 @@ public class FragmentPortfolio extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange FragmentProfile: datasnapshot" + dataSnapshot);
 
-                fullName = String.valueOf(dataSnapshot.child("Portfolio").child("full name").getValue());
-                profession = String.valueOf(dataSnapshot.child("Portfolio").child("profession").getValue());
-                description = String.valueOf(dataSnapshot.child("Portfolio").child("description").getValue());
-                condition = Boolean.valueOf(String.valueOf(dataSnapshot.child("Portfolio").child("condition")));
-                email = String.valueOf(dataSnapshot.child("Portfolio").child("email").getValue());
-                country = String.valueOf(dataSnapshot.child("Portfolio").child("country").getValue());
-                city = String.valueOf(dataSnapshot.child("Portfolio").child("city").getValue());
-                isValue = true;
+                if(Boolean.valueOf(String.valueOf(dataSnapshot.child("isPortfolio").getValue())))
+                {
+                    fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                    profession = String.valueOf(dataSnapshot.child("Portfolio").child("profession").getValue());
+                    description = String.valueOf(dataSnapshot.child("Portfolio").child("description").getValue());
+                    condition = Boolean.valueOf(String.valueOf(dataSnapshot.child("Portfolio").child("condition")));
+                    companyName = String.valueOf(dataSnapshot.child("Portfolio").child("company name").getValue());
+                    email = String.valueOf(dataSnapshot.child("email").getValue());
+                    country = String.valueOf(dataSnapshot.child("Profile").child("country").getValue());
+                    city = String.valueOf(dataSnapshot.child("Profile").child("city").getValue());
+                }
+                else if(Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfile").getValue())))
+                {
+                    fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                    email = String.valueOf(dataSnapshot.child("email").getValue());
+                    country = String.valueOf(dataSnapshot.child("Profile").child("country").getValue());
+                    city = String.valueOf(dataSnapshot.child("Profile").child("city").getValue());
+                }
+                else
+                {
+                    fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                    email = String.valueOf(dataSnapshot.child("email").getValue());
+                }
+
+                isProfilePic = Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfilePic").getValue()));
 
             }
 
@@ -161,19 +180,7 @@ public class FragmentPortfolio extends Fragment {
             }
         });
 
-        reference.keepSynced(false);
-
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: Single Value FragmentProfile" + dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        reference.keepSynced(true);
     }
 
 
@@ -186,17 +193,23 @@ public class FragmentPortfolio extends Fragment {
             Log.d(TAG, "downloadImages: " + reference);
 
 
-            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
+            if(isProfilePic)
+            {
+                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
 
-                    Picasso.get()
-                            .load(String.valueOf(uri))
-                            .placeholder(R.drawable.person_black_18dp)
-                            .into(hProfilePic);
-                }
-            });
-
+                        Picasso.get()
+                                .load(String.valueOf(uri))
+                                .placeholder(R.drawable.person_black_18dp)
+                                .into(hProfilePic);
+                    }
+                });
+            }
+            else
+            {
+                hProfilePic.setImageResource(R.drawable.person_black_18dp);
+            }
 
         }catch (Exception e)
         {

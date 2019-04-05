@@ -19,10 +19,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,17 +53,18 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     ImageView mProfilePicture;
     Button mConfirm;
-    EditText mFullName, mEmail, mCountry, mCity, mAddress, mPhoneNumber;
+    EditText  mCountry, mCity, mAddress;
+    TextView mFullName, mEmail, mPhoneNumber;
     RadioGroup mGroupRadio;
     RadioButton mMale, mFemale;
     FrameLayout mFramProgress;
     String gender;
     Uri URI_ProfilePictures;
     String URL_ProfilePicture;
+    boolean isProfilePic;
 
-    long value1 = 0;
-    SingletonValue value;
-    String fullName="", email="", phoneNumber="", country="", city="", address="";
+    String country="", city="", address="";
+    String fullName="", Email="", Phone="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,7 +75,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         //Initialize Firebase Objects
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-        String mUid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        String mUid =String.valueOf(mAuth.getCurrentUser().getUid());
         if(mDatabase == null)
         {
             mDatabase.setPersistenceEnabled(true);
@@ -80,7 +84,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 .child(mUid)
                 .child("Profile");
         mStorageREf = FirebaseStorage.getInstance().getReference("profilepics/" + mAuth.getCurrentUser().getUid() + "/profilepicture.jpg");
-        value = SingletonValue.getInstance(mUid);
+        mRef = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid());
 
 
         Log.d(TAG, "Reference to database : " + mRef);
@@ -98,6 +102,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         mMale = findViewById(R.id.male_radio);
         mFemale = findViewById(R.id.female_radio);
         mFramProgress = findViewById(R.id.frame_progress);
+
         mConfirm.setOnClickListener(this);
         mProfilePicture.setOnClickListener(this);
         mGroupRadio.setOnCheckedChangeListener(this);
@@ -136,34 +141,28 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     private void uploadUserInformation()
     {
-        final String fullName, email, country, city, address, phoneNumber;
-        final String URL;
-        URL = URL_ProfilePicture;
+        String lcountry, lcity, laddress;
 
 
-        fullName = mFullName.getText().toString();
-        email = mEmail.getText().toString().trim();
-        country = mCountry.getText().toString().trim();
-        city = mCity.getText().toString();
-        address = mAddress.getText().toString();
-        phoneNumber = mPhoneNumber.getText().toString().trim();
+        lcountry = mCountry.getText().toString().trim();
+        lcity = mCity.getText().toString();
+        laddress = mAddress.getText().toString();
 
         if(mRef != null)
         {
             try
             {
 
-                mRef.child("full name").setValue(fullName);
-                mRef.child("email").setValue(email);
-                mRef.child("country").setValue(country);
-                mRef.child("city").setValue(city);
-                mRef.child("address").setValue(address);
-                mRef.child("phone number").setValue(phoneNumber);
-                mRef.child("gender").setValue(gender);
-                mRef.child("profilepicurl").setValue(URL);
-
-
-
+                mRef.child("Profile").child("country").setValue(lcountry);
+                mRef.child("Profile").child("city").setValue(lcity);
+                mRef.child("Profile").child("address").setValue(laddress);
+                mRef.child("Profile").child("gender").setValue(gender);
+                mRef.child("isProfile").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "onComplete: Updated");
+                    }
+                });
 
             }catch (Exception e)
             {
@@ -241,7 +240,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     URL_ProfilePicture = uri.toString();
+                                    setProfilePicCondition();
                                     Log.d(TAG, "profile picture uri :  " + URL_ProfilePicture);
+
+                                    Toast.makeText(EditProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT)
+                                            .show();
+
                                 }
                             });
 
@@ -258,28 +262,41 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void setProfilePicCondition()
+    {
+        DatabaseReference reference = FirebaseDatabase
+                .getInstance()
+                .getReference("Users/" + mAuth.getCurrentUser().getUid() + "/isProfilePic");
+
+        reference.setValue(true);
+    }
+
     private void getData()
     {
-        DatabaseReference ref = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid());
-
        try
        {
-               ref.addValueEventListener(new ValueEventListener() {
+               mRef.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                    {
-                       fullName = Objects.requireNonNull(dataSnapshot.child("Profile").child("full name").getValue()).toString();
-                       email = Objects.requireNonNull(dataSnapshot.child("Profile").child("email").getValue()).toString();
-                       country = Objects.requireNonNull(dataSnapshot.child("Profile").child("country").getValue()).toString();
-                       city = Objects.requireNonNull(dataSnapshot.child("Profile").child("city").getValue()).toString();
-                       phoneNumber = Objects.requireNonNull(dataSnapshot.child("Profile").child("phone number").getValue()).toString();
-                       address = Objects.requireNonNull(dataSnapshot.child("Profile").child("address").getValue()).toString();
+                       if(Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfile").getValue())))
+                       {
+                           fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                           Email = String.valueOf(dataSnapshot.child("email").getValue());
+                           country = String.valueOf(dataSnapshot.child("Profile").child("country").getValue());
+                           city = String.valueOf(dataSnapshot.child("Profile").child("city").getValue());
+                           Phone = String.valueOf(dataSnapshot.child("phone number").getValue());
+                           address = String.valueOf(dataSnapshot.child("Profile").child("address").getValue());
+                       }
+                       else
+                       {
+                           fullName = String.valueOf(dataSnapshot.child("full name").getValue());
+                           Email = String.valueOf(dataSnapshot.child("email").getValue());
+                           Phone = String.valueOf(dataSnapshot.child("phone number").getValue());
+                       }
 
-                       Picasso.get()
-                               .load(String.valueOf(dataSnapshot.child("Profile").child("profilepicurl").getValue()))
-                               .placeholder(R.drawable.person_black_18dp)
-                               .into(mProfilePicture);
-                       value1 = 1;
+                       isProfilePic = Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfilePic").getValue()));
+
                    }
 
                    @Override
@@ -294,6 +311,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
 
 
+
+
        }catch (Exception e)
        {
            Log.e(TAG, "getData: %s", e);
@@ -301,41 +320,45 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    /*
-    private boolean getValue()
-    {
-        DatabaseReference reference = mDatabase.getReference("Users/" + mAuth.getCurrentUser().getUid() + "/Profile/value");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-
-                Log.d(TAG, "onDataChange: " + dataSnapshot);
-                value.getProfileValue() = (long) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled: %s" , databaseError.toException() );
-
-            }
-        });
-
-        if(value == 1)
-            return true;
-
-        return false;
-    }
-    */
 
     private void updateUIFromProfile()
     {
         mFullName.setText(fullName);
-        mEmail.setText(email);
-        mPhoneNumber.setText(phoneNumber);
+        mEmail.setText(Email);
+        mPhoneNumber.setText(Phone);
         mCountry.setText(country);
         mCity.setText(city);
         mAddress.setText(address);
+
+        if(isProfilePic)
+        {
+            StorageReference reference = FirebaseStorage
+                    .getInstance()
+                    .getReference("profilepics/" + mAuth.getCurrentUser().getUid() + "/profilepicture.jpg");
+
+            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri)
+                {
+                    Picasso.get()
+                            .load(uri)
+                            .placeholder(R.drawable.person_black_18dp)
+                            .into(mProfilePicture);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e)
+                {
+                    Log.d(TAG, "onFailure: " + e.getMessage());
+
+                }
+            });
+        }
+        else
+        {
+            mProfilePicture.setImageResource(R.drawable.person_black_18dp);
+        }
     }
 
     private class UploadData extends AsyncTask<Void, Void, Void>
@@ -350,14 +373,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mFramProgress.setVisibility(View.GONE);
             Toast.makeText(EditProfileActivity.this, "Updated" , Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mFramProgress.setVisibility(View.VISIBLE);
         }
 
 

@@ -181,12 +181,8 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                                     userRef.child("full name").setValue(fullName);
                                     userRef.child("email").setValue(email);
                                     userRef.child("phone number").setValue(phone);
-
-                                    DatabaseReference userProfile = userRef.child("Profile");
-                                    DatabaseReference userPortfolio = userRef.child("Portfolio");
-
-                                    userProfile.child("value").setValue(0);
-                                    userPortfolio.child("value").setValue(0);
+                                    userRef.child("isProfile").setValue(false);
+                                    userRef.child("isPortfolio").setValue(false);
 
                                     Log.d(TAG, "Sign Up successfully " );
                                     Toast.makeText(getContext(), "Sign Up successfully", Toast.LENGTH_SHORT).show();
