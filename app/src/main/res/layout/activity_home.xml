@@ -36,6 +36,7 @@
            android:layout_alignTop="@id/spinner"
            android:layout_marginTop="50dp"/>
 
+
        <ProgressBar
            android:visibility="gone"
            android:id="@+id/home_activity_progressbar"

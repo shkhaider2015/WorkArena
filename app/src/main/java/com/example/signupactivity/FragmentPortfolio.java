@@ -67,7 +67,6 @@ public class FragmentPortfolio extends Fragment {
         mPortfolioHeader = view.findViewById(R.id.portfolio_header);
         mPortfolioDescription = view.findViewById(R.id.portfolio_description);
         mPortfolioPersonalInfo = view.findViewById(R.id.portfolio_personal_info);
-        mPortfolioFeedback = view.findViewById(R.id.portfolio_feedback);
 
         //Header Initialization
         hFullName = mPortfolioHeader.findViewById(R.id.portfolio_header_full_name);
@@ -90,8 +89,8 @@ public class FragmentPortfolio extends Fragment {
 
         //feedback data initialize
 
-        fFeedback = mPortfolioFeedback.findViewById(R.id.portfolio_feedback_feedback);
-        fConfirm = mPortfolioFeedback.findViewById(R.id.portfolio_feedback_submit);
+        //fFeedback = mPortfolioFeedback.findViewById(R.id.portfolio_feedback_feedback);
+        //fConfirm = mPortfolioFeedback.findViewById(R.id.portfolio_feedback_submit);
 
 
 

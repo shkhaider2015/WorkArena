@@ -36,9 +36,7 @@
             layout="@layout/portfolio_personal_info"
             android:id="@+id/portfolio_personal_info"/>
 
-        <include
-            layout="@layout/portfolio_rating_feedback"
-            android:id="@+id/portfolio_feedback"/>
+
 
 
     </LinearLayout>

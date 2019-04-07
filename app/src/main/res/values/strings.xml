@@ -83,6 +83,7 @@
     <string name="profession">Profession</string>
     <string name="update">update</string>
     <string name="empty">Empty</string>
+    <string name="wait">wait</string>
 
     <!-- choose option -->
     <string name="profession_prompt">Choose Profession</string>

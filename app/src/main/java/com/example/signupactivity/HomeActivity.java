@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     String name, email, profileurl;
     boolean isProfilePic = false;
     ListView listView;
-    ArrayAdapter listAdapter;
+    ListUsers listUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     hProgressbar.setVisibility(View.VISIBLE);
                     Toast.makeText(HomeActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
 
-                    final ArrayAdapter listAdapter = new ArrayAdapter<String>(HomeActivity.this, R.layout.list_item, usersData(data));
+                   listUsers = new ListUsers(HomeActivity.this, usersData(data));
 
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -128,7 +128,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
                             hProgressbar.setVisibility(View.GONE);
 
-                            listView.setAdapter(listAdapter);
+                            listView.setAdapter(listUsers);
 
                         }
                     }, 3000);
@@ -349,9 +349,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(TAG, "onDataChange: profession : " + profession);
                     if(data.equals(profession))
                     {
+                        Log.d(TAG, "onDataChange: this user id = " + dataSnapshot1.getKey());
                         Log.d(TAG, "onDataChange: compare : " + data);
-                        String name = String.valueOf(dataSnapshot1.child("full name").getValue());
-                        users.add(name);
+                        String user_id = String.valueOf(dataSnapshot1.getKey());
+                        Log.d(TAG, "onDataChange: user_id " + user_id);
+                        users.add(user_id);
                     }
 
                 }
