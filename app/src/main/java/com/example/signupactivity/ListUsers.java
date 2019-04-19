@@ -1,6 +1,7 @@
 package com.example.signupactivity;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -9,13 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -24,9 +30,11 @@ import static android.support.constraint.Constraints.TAG;
 public class ListUsers extends BaseAdapter {
 
     private Context context;
-    private ArrayList<String> usersID;
+    protected ArrayList<String> usersID;
     private String name = "", email = "";
     TextView tname, temail;
+    ImageView profilePicture;
+    Uri uri;
     LayoutInflater inflater;
 
     public ListUsers(Context context, ArrayList<String> usersID)
@@ -65,6 +73,7 @@ public class ListUsers extends BaseAdapter {
 
             tname = convertView.findViewById(R.id.list_user_item_name);
             temail = convertView.findViewById(R.id.list_user_item_email);
+            profilePicture = convertView.findViewById(R.id.list_user_image);
         }
 
         Handler handler = new Handler();
@@ -74,6 +83,10 @@ public class ListUsers extends BaseAdapter {
 
                 tname.setText(name);
                 temail.setText(email);
+                Picasso.get()
+                        .load(uri)
+                        .placeholder(R.drawable.person_black_18dp)
+                        .into(profilePicture);
 
             }
         }, 2000);
@@ -87,6 +100,7 @@ public class ListUsers extends BaseAdapter {
     private void getData(String id)
     {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users/" + id);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profilepics/" + id + "/profilepicture.jpg");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -107,5 +121,19 @@ public class ListUsers extends BaseAdapter {
 
             }
         });
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                if(uri != null)
+                {
+                    ListUsers.this.uri = uri;
+                }
+
+            }
+        });
+
+
     }
 }

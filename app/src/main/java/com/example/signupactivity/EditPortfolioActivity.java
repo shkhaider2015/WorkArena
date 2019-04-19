@@ -80,7 +80,7 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_edit_portfolio);
 
        mProfilePic = findViewById(R.id.portfolio_edit_upload_profile_pic);
-       mUploadTimelinePic = findViewById(R.id.portfolio_edit_upload_timeline_pic);
+       //mUploadTimelinePic = findViewById(R.id.portfolio_edit_upload_timeline_pic);
        mTimelinePicSet = findViewById(R.id.portfolio_edit_timeline);
        mUpdate = findViewById(R.id.portfolio_edit_update_button);
 
@@ -146,9 +146,9 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
             case R.id.portfolio_edit_upload_profile_pic:
                 showImageChooser(CHOOSE_PROFILE);
                 break;
-            case R.id.portfolio_edit_upload_timeline_pic:
+           /* case R.id.portfolio_edit_upload_timeline_pic:
                 showImageChooser(CHOOSE_TIMELINE);
-                break;
+                break; */
             case R.id.portfolio_edit_update_button:
                 if(isProfessionSelected)
                 {

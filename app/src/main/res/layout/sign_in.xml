@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@mipmap/background"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -38,7 +39,8 @@
             android:layout_marginTop="120dp"
             android:layout_gravity="center_horizontal"
             android:hint="@string/email"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            android:fontFamily="@font/harngton"/>
         <EditText
             android:id="@+id/password_edittext"
             android:layout_width="260dp"
@@ -46,6 +48,7 @@
             android:layout_marginTop="30dp"
             android:layout_gravity="center_horizontal"
             android:hint="@string/password"
+            android:fontFamily="@font/harngton"
             android:inputType="textPassword"/>
         <Button
             android:id="@+id/signin_button"
@@ -53,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:text="@string/signin"
+            android:fontFamily="@font/harngton"
             android:layout_gravity="center_horizontal"/>
         <TextView
             android:id="@+id/warn1_textview"
@@ -61,6 +65,7 @@
             android:layout_marginTop="30dp"
             android:layout_gravity="center_horizontal"
             android:text="@string/warn1"
+            android:fontFamily="@font/harngton"
             android:textSize="18sp"/>
 
     </LinearLayout>

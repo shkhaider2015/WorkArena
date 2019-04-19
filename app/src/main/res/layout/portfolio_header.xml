@@ -2,8 +2,9 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="220dp"
     android:id="@+id/header_background"
+    android:background="@mipmap/user"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -17,8 +18,7 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@mipmap/ic_launcher"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/person_black_18dp"
         android:contentDescription="@string/image_view"/>
 
     <TextView
@@ -37,7 +37,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pession"
-        android:textSize="30sp"
+        android:textSize="25sp"
+        android:textStyle="bold"
         tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="192dp"
         app:layout_constraintStart_toEndOf="@id/portfolio_header_profile_pic"

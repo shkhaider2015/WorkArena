@@ -84,6 +84,7 @@
     <string name="update">update</string>
     <string name="empty">Empty</string>
     <string name="wait">wait</string>
+    <string name="submit">Submit</string>
 
     <!-- choose option -->
     <string name="profession_prompt">Choose Profession</string>
@@ -94,7 +95,6 @@
         <item>Gardner</item>
         <item>Carpenter</item>
     </string-array>
-
 
 
 </resources>

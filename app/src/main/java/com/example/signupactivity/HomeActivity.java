@@ -44,7 +44,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener , NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -54,8 +54,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     TextView mFullNameNav, mEmailNav;
     ProgressBar mProgressbarNav, hProgressbar;
     Spinner mSpinner;
-    String name, email, profileurl;
-    boolean isProfilePic = false;
+    String name, email;
+    Uri profileurl;
+    Boolean isProfilePic = false;
+    String IsProfilePic = "fasle";
     ListView listView;
     ListUsers listUsers;
 
@@ -67,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Work Arena");
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
@@ -145,14 +148,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        listView.setOnItemClickListener(this);
 
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         if(mAuth != null)
         {
             mProgressbarNav.setVisibility(View.VISIBLE);
@@ -166,7 +163,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             {
                 updateUINavHeader();
             }
-        }, 6000);
+        }, 9000);
+
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
 
     }
 
@@ -276,7 +283,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     name = String.valueOf(dataSnapshot.child("full name").getValue());
                     email = String.valueOf(dataSnapshot.child("email").getValue());
-                    isProfilePic = Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfilePic").getValue()));
+                    IsProfilePic = String.valueOf(dataSnapshot.child("isProfilePic").getValue());
+                    isProfilePic = Boolean.valueOf(dataSnapshot.child("isProfilePic").getValue().toString());
+                    Log.d(TAG, "Boolean : isProfilePic " +isProfilePic);
+                    Log.d(TAG, "onDataChange: IsProfilePic " + IsProfilePic);
 
                 }
 
@@ -288,37 +298,41 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
 
-            reference.keepSynced(true);
-
             StorageReference reference1 = FirebaseStorage
                     .getInstance()
-                    .getReference("profilepics/" + mAuth.getCurrentUser().getUid() + "/profilepicture.jpg");
+                    .getReference("profilepics")
+                    .child(mAuth.getCurrentUser().getUid())
+                    .child("profilepicture.jpg");
 
-            if(isProfilePic)
+            if(!IsProfilePic.equalsIgnoreCase("false"))
             {
+                Log.d(TAG, "getNavDataFromUsers: Prepare");
                 reference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri)
                     {
                         Log.d(TAG, "onSuccess: Uri : " +uri);
-                        if(uri != null)
-                        {
-                            profileurl = String.valueOf(uri);
-                        }
-                        Log.d(TAG, "Uri is null : ----->>");
+                        profileurl = uri;
+                        Log.d(TAG, "onSuccess: URL " + uri);
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e)
-                            {
-                                Log.e(TAG, "onFailure: Profile Pic failure %s", e);
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+                        Log.e(TAG, "onFailure: Profile Pic failure %s", e);
 
-                            }
-                        });
-
-
+                    }
+                });
             }
+
+
+
+
+
+
+
+            reference.keepSynced(true);
 
 
         }catch (NullPointerException e)
@@ -371,6 +385,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
         return users;
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        String specificUserID =String.valueOf(parent.getAdapter().getItem(position));
+        Log.d(TAG, "onItemClick: ListView Item id is : " + specificUserID);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("userID", specificUserID);
+        FragmentUsers fragmentUsers = new FragmentUsers();
+        fragmentUsers.setArguments(bundle);
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.addToBackStack(null);
+        transaction.add(R.id.home_container, fragmentUsers);
+        transaction.commit();
 
     }
 

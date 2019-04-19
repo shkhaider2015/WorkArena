@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@mipmap/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.signupactivity.HomeActivity">
@@ -16,7 +17,8 @@
            android:id="@+id/toolbar"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:background="@color/blueDark"/>
+           android:background="@color/some_dark"
+           android:theme="@style/ToolBarStyle"/>
 
        <android.support.v7.widget.AppCompatSpinner
            android:id="@+id/spinner"
@@ -62,6 +64,11 @@
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:layout_marginTop="50dp"/>
+       <FrameLayout
+           android:id="@+id/fragmentUserContainer"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_marginTop="50dp"/>
 
 
 
@@ -75,6 +82,7 @@
         android:layout_marginTop="50dp"
         android:layout_gravity="start"
         android:id="@+id/nav_view"
+        android:theme="@style/NavigationView"
         app:menu="@menu/drawer_menu"/>
 
     <!-- attach via code :: app:headerLayout="@layout/navbar_header" -->

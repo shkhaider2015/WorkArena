@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@mipmap/background">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
 
         <include
             layout="@layout/portfolio_header"
-            android:id="@+id/portfolio_header"/>
+            android:id="@+id/portfolio_header" />
 
         <include
             layout="@layout/portfolio_description"

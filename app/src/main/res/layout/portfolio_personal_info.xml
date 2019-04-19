@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TableLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,15 +24,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/name"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/portfolio_personal_info_fullname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
-                android:textSize="20sp"
-                android:layout_marginStart="50dp"/>
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
 
 
         </TableRow>
@@ -48,15 +48,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/email"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/portfolio_personal_info_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
-                android:textSize="20sp"
-                android:layout_marginStart="50dp"/>
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
 
 
         </TableRow>
@@ -72,15 +72,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/country"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/portfolio_personal_info_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
-                android:textSize="20sp"
-                android:layout_marginStart="50dp"/>
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
 
 
         </TableRow>
@@ -96,15 +96,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/city"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/portfolio_personal_info_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
-                android:textSize="20sp"
-                android:layout_marginStart="50dp"/>
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
 
 
         </TableRow>
@@ -120,15 +120,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/profession"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/portfolio_personal_info_profession"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
-                android:textSize="20sp"
-                android:layout_marginStart="50dp"/>
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
 
 
         </TableRow>
@@ -144,15 +144,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/company_name"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/portfolio_personal_info_company_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
-                android:textSize="20sp"
-                android:layout_marginStart="50dp"/>
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
 
 
         </TableRow>

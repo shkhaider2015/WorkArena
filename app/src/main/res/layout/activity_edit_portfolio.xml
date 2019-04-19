@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@mipmap/background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".EditPortfolioActivity">
@@ -29,19 +30,20 @@
             android:id="@+id/portfolio_edit_timeline"
             android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
-            android:layout_height="250dp">
+            android:layout_height="220dp"
+            android:background="@mipmap/user">
 
             <ImageView
                 android:id="@+id/portfolio_edit_upload_profile_pic"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/add_image"
+                android:src="@drawable/person_black_18dp"
                 android:contentDescription="@string/upload_profile_image"/>
-
+<!--
             <TextView
                 android:id="@+id/portfolio_edit_upload_timeline_pic"
                 android:layout_width="wrap_content"
@@ -51,6 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="@string/upload_background_image"/>
+                -->
 
 
 
