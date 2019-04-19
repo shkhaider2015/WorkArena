@@ -6,10 +6,12 @@
 
         <item
             android:id="@+id/nav_profile"
-            android:title="@string/profile" />
+            android:title="@string/profile"
+            android:icon="@drawable/profile"/>
         <item
             android:id="@+id/nav_portfolio"
-            android:title="@string/portfolio"/>
+            android:title="@string/portfolio"
+            android:icon="@drawable/edit_portfolio"/>
 
 
     </group>
