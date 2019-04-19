@@ -40,7 +40,9 @@
             android:layout_gravity="center_horizontal"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:fontFamily="@font/harngton"/>
+            android:fontFamily="@font/harngton"
+            android:drawableStart="@drawable/ic_action_mail"
+            android:drawablePadding="20dp"/>
         <EditText
             android:id="@+id/password_edittext"
             android:layout_width="260dp"
@@ -49,7 +51,9 @@
             android:layout_gravity="center_horizontal"
             android:hint="@string/password"
             android:fontFamily="@font/harngton"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:drawableStart="@drawable/ic_action_password"
+            android:drawablePadding="20dp"/>
         <Button
             android:id="@+id/signin_button"
             android:layout_width="wrap_content"

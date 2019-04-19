@@ -28,6 +28,8 @@
         android:autofillHints="@string/fullname"
         android:fontFamily="@font/harngton"
         android:inputType="text"
+        android:drawableStart="@drawable/ic_action_name"
+        android:drawablePadding="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -41,6 +43,8 @@
         android:fontFamily="@font/harngton"
         android:autofillHints="@string/email"
         android:inputType="textEmailAddress"
+        android:drawableStart="@drawable/ic_action_mail"
+        android:drawablePadding="20dp"
         app:layout_constraintTop_toBottomOf="@id/fullname_edittext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -54,6 +58,8 @@
         android:autofillHints="@string/password"
         android:inputType="textPassword"
         android:fontFamily="@font/harngton"
+        android:drawableStart="@drawable/ic_action_password"
+        android:drawablePadding="20dp"
         app:layout_constraintTop_toBottomOf="@+id/email_edittext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -67,6 +73,8 @@
         android:hint="@string/phone"
         android:inputType="phone"
         android:fontFamily="@font/harngton"
+        android:drawableStart="@drawable/ic_action_phone"
+        android:drawablePadding="20dp"
         app:layout_constraintTop_toBottomOf="@+id/password_edittext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
