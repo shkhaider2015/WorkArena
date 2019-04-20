@@ -110,6 +110,8 @@
                    android:singleLine="true"
                    android:hint="@string/fullname"
                    android:autofillHints="@string/fullname"
+                   android:drawableStart="@drawable/ic_action_name"
+                   android:drawablePadding="10dp"
                    />
 
                <TextView
@@ -121,7 +123,9 @@
                    android:layout_marginTop="20dp"
                    android:inputType="text"
                    android:hint="@string/email"
-                   android:autofillHints="@string/email"/>
+                   android:autofillHints="@string/email"
+                   android:drawableStart="@drawable/ic_action_mail"
+                   android:drawablePadding="10dp"/>
 
                <TextView
                    android:id="@+id/portfolio_edit_country"
@@ -132,7 +136,9 @@
                    android:layout_marginTop="20dp"
                    android:inputType="text"
                    android:hint="@string/country"
-                   android:autofillHints="@string/country"/>
+                   android:autofillHints="@string/country"
+                   android:drawableStart="@drawable/ic_action_country"
+                   android:drawablePadding="10dp"/>
 
                <TextView
                    android:id="@+id/portfolio_edit_city"
@@ -143,7 +149,9 @@
                    android:layout_marginTop="20dp"
                    android:inputType="text"
                    android:hint="@string/city"
-                   android:autofillHints="@string/city"/>
+                   android:autofillHints="@string/city"
+                   android:drawableStart="@drawable/ic_action_city"
+                   android:drawablePadding="10dp"/>
 
               <Spinner
                   android:id="@+id/portfolio_edit_profession"

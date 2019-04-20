@@ -50,7 +50,9 @@
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:drawableStart="@drawable/ic_action_name"
+            android:drawablePadding="10dp"/>
 
         <TextView
             android:id="@+id/email_profile1"
@@ -60,7 +62,9 @@
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            android:drawableStart="@drawable/ic_action_mail"
+            android:drawablePadding="10dp"/>
 
         <EditText
             android:id="@+id/country_profile1"
@@ -70,7 +74,9 @@
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:drawableStart="@drawable/ic_action_country"
+            android:drawablePadding="10dp"/>
 
         <EditText
             android:id="@+id/city_profile1"
@@ -80,7 +86,9 @@
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:drawableStart="@drawable/ic_action_city"
+            android:drawablePadding="10dp"/>
 
         <EditText
             android:id="@+id/address_profile1"
@@ -90,7 +98,9 @@
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:drawableStart="@drawable/ic_action_city"
+            android:drawablePadding="10dp"/>
 
         <TextView
             android:id="@+id/phone_profile1"
@@ -100,7 +110,9 @@
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:inputType="phone"/>
+            android:inputType="phone"
+            android:drawableStart="@drawable/ic_action_phone"
+            android:drawablePadding="10dp"/>
 
         <RadioGroup
             android:id="@+id/radio_group"
@@ -115,14 +127,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/male"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:padding="10dp"/>
             <RadioButton
                 android:id="@+id/female_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/female"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:padding="10dp"/>
 
         </RadioGroup>

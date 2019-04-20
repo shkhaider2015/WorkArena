@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +28,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-public class FragmentUsers extends Fragment {
+import java.util.Objects;
+
+public class FragmentUsers extends Fragment implements View.OnClickListener {
     private static final String TAG = "FragmentUsers";
 
     View V_header, V_description, V_personalInfo, V_feedback;
@@ -41,6 +44,10 @@ public class FragmentUsers extends Fragment {
     String userID; Uri uri;
 
     String name="", email="", profession="", country="", city="", companyName="", userDescription="", condition= "off";
+
+    DatabaseReference reference;
+    FirebaseAuth mAuth;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,12 +93,14 @@ public class FragmentUsers extends Fragment {
         }, 5000);
 
 
+        F_submit.setOnClickListener(this);
+
         return view;
     }
 
     private void getUserData()
     {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users/" + userID);
+        reference = FirebaseDatabase.getInstance().getReference("Users/" + userID);
         String storageRef = "profilepics/" + userID + "/profilepicture.jpg";
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(storageRef);
 
@@ -141,4 +150,26 @@ public class FragmentUsers extends Fragment {
                 .into(H_profilePic);
     }
 
+    private void handleFeedback()
+    {
+        mAuth = FirebaseAuth.getInstance();
+        String uID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        String feedback = F_feedback.getText().toString();
+
+        if(feedback.isEmpty())
+        {
+            F_feedback.setError("write something");
+            F_feedback.requestFocus();
+            return;
+        }
+
+        reference.child("portfolio_feedback").child(uID).setValue(feedback);
+
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        handleFeedback();
+    }
 }
