@@ -63,6 +63,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/fullname"/>
 
                     <TextView
@@ -70,6 +71,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
 
@@ -93,6 +95,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/email"/>
 
                     <TextView
@@ -100,6 +103,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
 
@@ -123,6 +127,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/country"/>
 
                     <TextView
@@ -130,6 +135,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
 
@@ -153,6 +159,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/city"/>
 
                     <TextView
@@ -160,6 +167,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
 
@@ -183,6 +191,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/street_address"/>
 
                     <TextView
@@ -190,6 +199,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
 
@@ -213,6 +223,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/gender"/>
 
                     <TextView
@@ -220,6 +231,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
 
@@ -239,6 +251,7 @@
                     android:padding="30dp">
 
                     <Button
+                        android:visibility="gone"
                         android:id="@+id/frag_prof_edit_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

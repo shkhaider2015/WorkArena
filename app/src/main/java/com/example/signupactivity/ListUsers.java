@@ -30,28 +30,28 @@ import static android.support.constraint.Constraints.TAG;
 public class ListUsers extends BaseAdapter {
 
     private Context context;
-    protected ArrayList<String> usersID;
+    protected ArrayList<Model_ListUserItem> users;
     private String name = "", email = "";
     TextView tname, temail;
     ImageView profilePicture;
     Uri uri;
     LayoutInflater inflater;
 
-    public ListUsers(Context context, ArrayList<String> usersID)
+    public ListUsers(Context context, ArrayList<Model_ListUserItem> usersID)
     {
         this.context = context;
-        this.usersID = usersID;
+        this.users = usersID;
         inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return usersID.size();
+        return users.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return usersID.get(position);
+        return users.get(position);
     }
 
     @Override
@@ -62,34 +62,24 @@ public class ListUsers extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-
-        getData(usersID.get(position));
-
+        Model_ListUserItem model =users.get(position);
 
         if(convertView == null)
         {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_user_item, null);
-
-            tname = convertView.findViewById(R.id.list_user_item_name);
-            temail = convertView.findViewById(R.id.list_user_item_email);
-            profilePicture = convertView.findViewById(R.id.list_user_image);
         }
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        tname = convertView.findViewById(R.id.list_user_item_name);
+        temail = convertView.findViewById(R.id.list_user_item_email);
+        profilePicture = convertView.findViewById(R.id.list_user_image);
 
-                tname.setText(name);
-                temail.setText(email);
+                tname.setText(model.getName());
+                temail.setText(model.getEmail());
                 Picasso.get()
-                        .load(uri)
+                        .load(model.getUri())
                         .placeholder(R.drawable.person_black_18dp)
                         .into(profilePicture);
-
-            }
-        }, 2000);
 
 
 

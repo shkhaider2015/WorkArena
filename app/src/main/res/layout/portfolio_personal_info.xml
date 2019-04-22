@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/name"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp" />
 
             <TextView
@@ -31,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:layout_marginStart="10dp"/>
 
@@ -48,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/email"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp" />
 
             <TextView
@@ -55,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:layout_marginStart="10dp"/>
 
@@ -72,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/country"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp" />
 
             <TextView
@@ -79,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:layout_marginStart="10dp"/>
 
@@ -96,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/city"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp" />
 
             <TextView
@@ -103,6 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:layout_marginStart="10dp"/>
 
@@ -120,6 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/profession"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp" />
 
             <TextView
@@ -127,6 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:layout_marginStart="10dp"/>
 
@@ -144,6 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/company_name"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp" />
 
             <TextView
@@ -151,6 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:layout_marginStart="10dp"/>
 

@@ -28,6 +28,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/name"
+        android:fontFamily="@font/harngton"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/portfolio_header_profession"
         app:layout_constraintStart_toEndOf="@+id/portfolio_header_profile_pic" />
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/pession"
         android:textSize="25sp"
+        android:fontFamily="@font/harngton"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="192dp"

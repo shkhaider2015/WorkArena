@@ -51,6 +51,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:inputType="text"
+            android:fontFamily="@font/harngton"
             android:drawableStart="@drawable/ic_action_name"
             android:drawablePadding="10dp"/>
 
@@ -63,6 +64,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:inputType="textEmailAddress"
+            android:fontFamily="@font/harngton"
             android:drawableStart="@drawable/ic_action_mail"
             android:drawablePadding="10dp"/>
 
@@ -75,6 +77,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:inputType="text"
+            android:fontFamily="@font/harngton"
             android:drawableStart="@drawable/ic_action_country"
             android:drawablePadding="10dp"/>
 
@@ -87,6 +90,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:inputType="text"
+            android:fontFamily="@font/harngton"
             android:drawableStart="@drawable/ic_action_city"
             android:drawablePadding="10dp"/>
 
@@ -99,6 +103,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:inputType="text"
+            android:fontFamily="@font/harngton"
             android:drawableStart="@drawable/ic_action_city"
             android:drawablePadding="10dp"/>
 
@@ -111,6 +116,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:inputType="phone"
+            android:fontFamily="@font/harngton"
             android:drawableStart="@drawable/ic_action_phone"
             android:drawablePadding="10dp"/>
 
@@ -127,6 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/male"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:padding="10dp"/>
             <RadioButton
@@ -134,6 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/female"
+                android:fontFamily="@font/harngton"
                 android:textSize="15sp"
                 android:padding="10dp"/>
 
@@ -145,6 +153,7 @@
             android:layout_height="wrap_content"
             android:text="@string/confirm"
             android:textSize="18sp"
+            android:fontFamily="@font/harngton"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"/>

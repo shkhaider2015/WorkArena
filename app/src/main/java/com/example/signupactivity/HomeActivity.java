@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
     ImageView mProfilePicNav;
-    TextView mFullNameNav, mEmailNav;
+    TextView mFullNameNav, mEmailNav, welcome;
     ProgressBar mProgressbarNav, hProgressbar;
     Spinner mSpinner;
     String name, email;
@@ -61,6 +61,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     String IsProfilePic = "fasle";
     ListView listView;
     ListUsers listUsers;
+    Uri tempURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mProgressbarNav = headerLayout.findViewById(R.id.nav_header_progressbar);
         hProgressbar = findViewById(R.id.home_activity_progressbar);
         mSpinner = findViewById(R.id.spinner);
+        welcome = findViewById(R.id.welcome);
 
 
 
@@ -124,6 +126,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 else
                 {
+                    welcome.setVisibility(View.GONE);
                     hProgressbar.setVisibility(View.VISIBLE);
                     Toast.makeText(HomeActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
 
@@ -167,9 +170,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             {
                 updateUINavHeader();
             }
-        }, 9000);
+        }, 3000);
 
 
+        /*
+        ListView horizontal_list = findViewById(R.id.horizontal_list);
+        ListProfession listProfession = new ListProfession(this);
+        horizontal_list.setAdapter(listProfession);
+        */
 
 
     }
@@ -288,7 +296,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     name = String.valueOf(dataSnapshot.child("full name").getValue());
                     email = String.valueOf(dataSnapshot.child("email").getValue());
                     IsProfilePic = String.valueOf(dataSnapshot.child("isProfilePic").getValue());
-                    isProfilePic = Boolean.valueOf(dataSnapshot.child("isProfilePic").getValue().toString());
+                    isProfilePic = Boolean.valueOf(String.valueOf(dataSnapshot.child("isProfilePic").getValue()));
                     Log.d(TAG, "Boolean : isProfilePic " +isProfilePic);
                     Log.d(TAG, "onDataChange: IsProfilePic " + IsProfilePic);
 
@@ -348,30 +356,49 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private ArrayList<String> usersData(final String data)
+    private ArrayList<Model_ListUserItem> usersData(final String data)
     {
-        final ArrayList<String> users = new ArrayList<>();
+        final ArrayList<Model_ListUserItem> users = new ArrayList<>();
 
         DatabaseReference usersRef = mDatabase.getReference("Users");
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        ValueEventListener valueEventListener = new ValueEventListener()
+        {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
                 {
-                    Log.d(TAG, "onDataChange: name = " + name);
-                    Log.d(TAG, "onDataChange: datasnapshot --> " + dataSnapshot1);
+                    final Model_ListUserItem model = new Model_ListUserItem();
 
                     String profession = String.valueOf(dataSnapshot1.child("Portfolio").child("profession").getValue()).trim();
-                    Log.d(TAG, "onDataChange: profession : " + profession);
+                    Log.d(TAG, "onDataChange: Profession : " + profession);
+
                     if(data.equals(profession))
                     {
-                        Log.d(TAG, "onDataChange: this user id = " + dataSnapshot1.getKey());
-                        Log.d(TAG, "onDataChange: compare : " + data);
+                        Log.d(TAG, "Equals: this user id = " + dataSnapshot1.getKey());
+                        Log.d(TAG, "Equals: compare : " + data + " = " + profession);
+
                         String user_id = String.valueOf(dataSnapshot1.getKey());
-                        Log.d(TAG, "onDataChange: user_id " + user_id);
-                        users.add(user_id);
+                        String name = String.valueOf(dataSnapshot1.child("full name").getValue());
+                        String email = String.valueOf(dataSnapshot1.child("email").getValue());
+
+                        StorageReference reference = FirebaseStorage.getInstance().getReference("profilepics/" + user_id + "/profilepicture.jpg");
+                        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                model.setUri(uri);
+                            }
+                        });
+                        Log.d(TAG, "Equals: user_id " + user_id);
+
+                        //users.add(user_id);
+
+                        model.setName(name);
+                        model.setEmail(email);
+                        model.setuID(user_id);
+
+                        users.add(model);
                     }
 
                 }
@@ -395,11 +422,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-        String specificUserID =String.valueOf(parent.getAdapter().getItem(position));
-        Log.d(TAG, "onItemClick: ListView Item id is : " + specificUserID);
+        Model_ListUserItem model = (Model_ListUserItem) parent.getAdapter().getItem(position);
+
+        Log.d(TAG, "onItemClick: ListView Item id is : " + model.getuID());
 
         Bundle bundle = new Bundle();
-        bundle.putString("userID", specificUserID);
+        bundle.putString("userID", model.getuID());
         FragmentUsers fragmentUsers = new FragmentUsers();
         fragmentUsers.setArguments(bundle);
         FragmentManager manager = getSupportFragmentManager();

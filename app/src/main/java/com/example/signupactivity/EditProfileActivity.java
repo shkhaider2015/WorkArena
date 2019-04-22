@@ -2,6 +2,7 @@ package com.example.signupactivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -37,6 +38,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -44,6 +48,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     private static final String TAG = "EditProfileActivity";
     private static final int CHOOSE_IMAGE = 101;
+    private static final int IMAGE_MAX_SIZE = 200;
 
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
@@ -217,6 +222,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), URI_ProfilePictures);
                 mProfilePicture.setImageBitmap(bitmap);
+
                 uploadImageToFirebase();
 
             } catch (IOException e)
@@ -359,6 +365,50 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         {
             mProfilePicture.setImageResource(R.drawable.person_black_18dp);
         }
+    }
+
+    private Bitmap decodeImage(File f)
+    {
+        Bitmap b = null;
+        try
+        {
+
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+
+            FileInputStream fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+
+            int scale = 1;
+            if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+                scale = (int)Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                        (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+            }
+
+            //Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+
+
+        }catch (FileNotFoundException fnfe)
+        {
+            Log.d(TAG, "decodeImage: Exception File Not Found : " +fnfe.getMessage());
+
+        }catch (IOException ioe)
+        {
+            Log.d(TAG, "decodeImage: Input Output Exception : " + ioe.getMessage());
+
+        }catch (Exception e)
+        {
+            Log.d(TAG, "decodeImage: Exception : " + e.getMessage());
+
+        }
+
+        return b;
     }
 
     private class UploadData extends AsyncTask<Void, Void, Void>

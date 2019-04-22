@@ -46,8 +46,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\shkha\Documents\MEGAsync\WorkArena Stuff\icons\edit Text\city.png" />
-                                      <entry key="outputName" value="ic_action_city" />
+                                      <entry key="imageAsset" value="C:\Users\shkha\Documents\MEGAsync\WorkArena Stuff\icons\profession\plumber.png" />
+                                      <entry key="outputName" value="ic_tab_plumber" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>

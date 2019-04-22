@@ -69,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/about_yourself"
+                android:fontFamily="@font/harngton"
                 android:autofillHints="@string/about_yourself"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -109,6 +110,7 @@
                    android:inputType="text"
                    android:singleLine="true"
                    android:hint="@string/fullname"
+                   android:fontFamily="@font/harngton"
                    android:autofillHints="@string/fullname"
                    android:drawableStart="@drawable/ic_action_name"
                    android:drawablePadding="10dp"
@@ -124,6 +126,7 @@
                    android:inputType="text"
                    android:hint="@string/email"
                    android:autofillHints="@string/email"
+                   android:fontFamily="@font/harngton"
                    android:drawableStart="@drawable/ic_action_mail"
                    android:drawablePadding="10dp"/>
 
@@ -137,6 +140,7 @@
                    android:inputType="text"
                    android:hint="@string/country"
                    android:autofillHints="@string/country"
+                   android:fontFamily="@font/harngton"
                    android:drawableStart="@drawable/ic_action_country"
                    android:drawablePadding="10dp"/>
 
@@ -150,6 +154,7 @@
                    android:inputType="text"
                    android:hint="@string/city"
                    android:autofillHints="@string/city"
+                   android:fontFamily="@font/harngton"
                    android:drawableStart="@drawable/ic_action_city"
                    android:drawablePadding="10dp"/>
 
@@ -162,6 +167,7 @@
                   android:layout_marginTop="20dp"
                   android:autofillHints="@string/profession_prompt"
                   android:prompt="@string/profession_prompt"
+                  android:fontFamily="@font/harngton"
                   android:entries="@array/profession_array"/>
 
                <EditText
@@ -173,6 +179,7 @@
                    android:layout_marginTop="20dp"
                    android:inputType="text"
                    android:hint="@string/company_name"
+                   android:fontFamily="@font/harngton"
                    android:autofillHints="@string/company_name"/>
 
 

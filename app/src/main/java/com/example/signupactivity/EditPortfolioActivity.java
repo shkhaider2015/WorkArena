@@ -54,7 +54,7 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
     private ImageView  mProfilePic;
     private Spinner mProfession;
     private EditText mAboutUser, mCompanyName;
-    private TextView mUploadTimelinePic, mFullName, mEmail, mCountry, mCity;
+    private TextView /* mUploadTimelinePic, */ mFullName, mEmail, mCountry, mCity;
     private Button mUpdate;
     private ConstraintLayout mTimelinePicSet;
     private ProgressBar progressBar;
@@ -105,7 +105,7 @@ public class EditPortfolioActivity extends AppCompatActivity implements View.OnC
        }
 
        mProfilePic.setOnClickListener(this);
-       mUploadTimelinePic.setOnClickListener(this);
+       //mUploadTimelinePic.setOnClickListener(this);
        mUpdate.setOnClickListener(this);
 
        mProfession.setOnItemSelectedListener(this);
