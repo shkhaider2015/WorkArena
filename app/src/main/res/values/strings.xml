@@ -58,6 +58,7 @@
     <string name="address_empty">address is required</string>
     <string name="phone_wrong">phone number is wrong</string>
     <string name="image_view">Image view</string>
+    <string name="personal_info">Personal Information</string>
     <string name="company_empty">company name is required</string>
     <string name="profession_empty">profession is required</string>
     <string name="about_user_empty">write something about yourself</string>

@@ -15,7 +15,7 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
-
+<!--
         <ImageView
             android:id="@+id/nav_header_profile_pic"
             android:layout_width="50dp"
@@ -23,6 +23,17 @@
             android:src="@drawable/person_black_18dp"
             android:contentDescription="@string/image_view"
             />
+            -->
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/nav_header_profile_pic"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/person_black_18dp"
+            app:civ_border_color="#EEEEEE"
+            app:civ_border_width="4dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="10"
+            app:civ_shadow_color="#8BC34A" />
         <TextView
             android:id="@+id/nav_header_profile_name"
             android:layout_width="wrap_content"

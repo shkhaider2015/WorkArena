@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/background">
 
     <ProgressBar
@@ -26,51 +26,71 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@mipmap/user">
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="0dp">
 
-                    <ImageView
+
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/frag_prof_pic"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_width="120dp"
+                        android:layout_height="130dp"
                         android:src="@drawable/person_black_18dp"
-                        android:contentDescription="@string/image_view"
-                        android:layout_marginTop="20dp"
-                        android:visibility="visible"/>
+                        app:civ_border_color="#EEEEEE"
+                        app:civ_border_width="4dp"
+                        app:civ_shadow="true"
+                        app:civ_shadow_radius="10"
+                        app:civ_shadow_color="#8BC34A"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="20dp"/>
 
-                </LinearLayout>
+
+
+                </android.support.constraint.ConstraintLayout>
 
             </TableRow>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/personal_info"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="20dp"
+                    android:padding="10dp"
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/fullname"/>
 
                     <TextView
                         android:id="@+id/frag_prof_fullname"
-                        android:layout_width="200dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
@@ -92,17 +112,17 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/email"/>
 
                     <TextView
                         android:id="@+id/frag_prof_email"
-                        android:layout_width="200dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
@@ -124,17 +144,17 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/country"/>
 
                     <TextView
                         android:id="@+id/frag_prof_country"
-                        android:layout_width="200dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
@@ -156,17 +176,17 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/city"/>
 
                     <TextView
                         android:id="@+id/frag_prof_city"
-                        android:layout_width="200dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
@@ -188,17 +208,17 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/street_address"/>
 
                     <TextView
                         android:id="@+id/frag_prof_address"
-                        android:layout_width="200dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 
@@ -220,17 +240,17 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/gender"/>
 
                     <TextView
                         android:id="@+id/frag_prof_gender"
-                        android:layout_width="200dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:fontFamily="@font/harngton"
                         android:text="@string/empty"/>
 

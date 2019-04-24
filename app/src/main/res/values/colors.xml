@@ -15,6 +15,16 @@
 
     <color name="gray">#cccccc</color>
     <color name="light_gray">#e0dbdb</color>
+    
+    
+    <!-- pupol Theme -->
+    <color name="purple_primary">#e08aff</color>
+    <color name="purple_light">#ffbcff</color>
+    <color name="purple_dark">#ac5acb</color>
 
+    <!-- pupol Theme -->
+    <color name="green_primary">#04afff</color>
+    <color name="green_light">#6ae1ff</color>
+    <color name="green_dark">#0080cb</color>
 
 </resources>
