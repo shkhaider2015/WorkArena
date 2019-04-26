@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@mipmap/background">
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,9 +28,19 @@
             layout="@layout/portfolio_header"
             android:id="@+id/portfolio_header" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/light_gray"/>
+
         <include
             layout="@layout/portfolio_description"
             android:id="@+id/portfolio_description"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/light_gray"/>
 
         <include
             layout="@layout/portfolio_personal_info"

@@ -62,6 +62,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     ListView listView;
     ListUsers listUsers;
     Uri tempURI;
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerLayout = navigationView.inflateHeaderView(R.layout.navbar_header);
@@ -236,6 +237,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         switch (menuItem.getItemId())
         {
             case R.id.nav_profile:
+                drawerLayout.closeDrawers();
                 FragmentProfile profile = new FragmentProfile();
                 FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
@@ -244,6 +246,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 transaction.commit();
                 break;
             case R.id.nav_portfolio:
+                drawerLayout.closeDrawers();
                 FragmentManager manager1 = getSupportFragmentManager();
                 FragmentTransaction transaction1 = manager1.beginTransaction();
                 transaction1.replace(R.id.home_container, new FragmentPortfolio());

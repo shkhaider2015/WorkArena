@@ -31,7 +31,9 @@
         android:gravity="top|left"
         android:minLines="3"
         android:maxLines="6"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:backgroundTint="@color/full_dark"
+        android:textCursorDrawable="@drawable/black_cursor"/>
 
     <Button
         android:id="@+id/portfolio_feedback_submit"

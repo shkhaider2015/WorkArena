@@ -67,7 +67,7 @@
     <!-- Components -->
 
     <string name="name">Full Name</string>
-    <string name="pession">Pession :P</string>
+    <string name="pession">Profession</string>
     <string name="call">Call</string>
     <string name="description">About Your Self</string>
     <string name="value">Value :</string>

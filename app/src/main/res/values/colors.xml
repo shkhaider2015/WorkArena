@@ -12,9 +12,11 @@
 
     <color name="white">#ffffff</color>
     <color name="some_dark">#5a5b5b</color>
+    <color name="full_dark">#000000</color>
 
     <color name="gray">#cccccc</color>
     <color name="light_gray">#e0dbdb</color>
+    <color name="more_light_gray">#f4f4f4</color>
     
     
     <!-- pupol Theme -->

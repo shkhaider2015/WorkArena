@@ -15,9 +15,11 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +29,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class FragmentSignIn extends Fragment implements View.OnClickListener {
+import java.util.Objects;
+
+public class FragmentSignIn extends Fragment implements View.OnClickListener , View.OnFocusChangeListener {
 
     private static final String TAG = "FragmentSignIn";
     EditText mEmail, mPassword;
-    FrameLayout mProgress;
+    ProgressBar mProgress;
     FirebaseAuth mAuth;
 
     @Nullable
@@ -50,6 +54,8 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
 
         mSignIn.setOnClickListener(this);
         mWarn1.setOnClickListener(this);
+        mEmail.setOnFocusChangeListener(this);
+        mPassword.setOnFocusChangeListener(this);
 
 
         return view;
@@ -83,11 +89,16 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
                 transaction.commit();
 
                 break;
+
         }
 
     }
 
 
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     private void userInfo()
     {
         String email, password;
@@ -155,5 +166,11 @@ public class FragmentSignIn extends Fragment implements View.OnClickListener {
     }
 
 
-
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus)
+        {
+            hideKeyboard(v);
+        }
+    }
 }

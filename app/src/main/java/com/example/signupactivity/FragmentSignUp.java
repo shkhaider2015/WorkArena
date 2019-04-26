@@ -1,5 +1,6 @@
 package com.example.signupactivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,8 +13,10 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
-public class FragmentSignUp extends Fragment implements View.OnClickListener {
+public class FragmentSignUp extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
 
     private static final String TAG = "FragmentSignUp";
     EditText mFullName, mEmail, mPassword, mPhone;
@@ -65,6 +68,13 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         mSignUp.setOnClickListener(this);
         mWarn2.setOnClickListener(this);
 
+        mFullName.setOnFocusChangeListener(this);
+        mEmail.setOnFocusChangeListener(this);
+        mPassword.setOnFocusChangeListener(this);
+        mPhone.setOnFocusChangeListener(this);
+
+
+
 
         return view;
     }
@@ -89,7 +99,6 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                 transaction.replace(R.id.fragment_container, signIn);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
                 break;
         }
 
@@ -244,5 +253,18 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
     }
 
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus)
+    {
+        if(!hasFocus)
+        {
+            hideKeyboard(v);
+        }
 
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@mipmap/background"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".EditPortfolioActivity">
@@ -18,20 +18,22 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:indeterminateTint="@color/full_dark"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:divider="@color/more_light_gray">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/portfolio_edit_timeline"
             android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_height="220dp"
-            android:background="@mipmap/user">
+            android:background="@drawable/black_and_white_gradient">
 
             <ImageView
                 android:id="@+id/portfolio_edit_upload_profile_pic"
@@ -59,6 +61,12 @@
 
         </android.support.constraint.ConstraintLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/more_light_gray"/>
+
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -81,7 +89,9 @@
                 android:inputType="textMultiLine"
                 android:minLines="3"
                 android:maxLines="6"
-                android:singleLine="false"/>
+                android:singleLine="false"
+                android:backgroundTint="@color/full_dark"
+                android:textCursorDrawable="@drawable/black_cursor"/>
 
 
         </android.support.constraint.ConstraintLayout>
@@ -180,7 +190,9 @@
                    android:inputType="text"
                    android:hint="@string/company_name"
                    android:fontFamily="@font/harngton"
-                   android:autofillHints="@string/company_name"/>
+                   android:autofillHints="@string/company_name"
+                   android:backgroundTint="@color/full_dark"
+                   android:textCursorDrawable="@drawable/black_cursor"/>
 
 
 

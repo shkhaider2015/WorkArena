@@ -5,19 +5,41 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/full_dark</item>
+        <item name="colorAccent">@color/full_dark</item>
     </style>
 
     <style name="ToolBarStyle" parent="Theme.AppCompat">
         <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/full_dark</item>
+        <item name="colorAccent">@color/full_dark</item>
         <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:statusBarColor">@color/full_dark</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:fontFamily">@font/harngton</item>
     </style>
 
     <style name="NavigationView" >
         <item name="fontFamily">@font/harngton</item>
+    </style>
+
+    <style name="mainActivity" >
+        <item name="android:statusBarColor">@color/full_dark</item>
+        <item name="android:colorPrimaryDark">@color/full_dark</item>
+    </style>
+
+    <style name="list_devider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/light_gray</item>
+    </style>
+
+    <style name="progressbar_color">
+        <item name="android:colorAccent">@color/full_dark</item>
+    </style>
+
+    <style name="progressbar_color.">
+        <item name="android:colorAccent">@color/white</item>
     </style>
 
 

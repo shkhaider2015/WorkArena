@@ -1,5 +1,6 @@
 package com.example.signupactivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -44,7 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener , RadioGroup.OnCheckedChangeListener {
+public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener , RadioGroup.OnCheckedChangeListener, View.OnFocusChangeListener {
 
     private static final String TAG = "EditProfileActivity";
     private static final int CHOOSE_IMAGE = 101;
@@ -111,6 +113,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         mConfirm.setOnClickListener(this);
         mProfilePicture.setOnClickListener(this);
         mGroupRadio.setOnCheckedChangeListener(this);
+
+        mCountry.setOnFocusChangeListener(this);
+        mCity.setOnFocusChangeListener(this);
+        mAddress.setOnFocusChangeListener(this);
 
 
 
@@ -409,6 +415,20 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
 
         return b;
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus)
+        {
+            hideKeyboard(v);
+        }
+
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private class UploadData extends AsyncTask<Void, Void, Void>

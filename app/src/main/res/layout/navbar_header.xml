@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:gravity="bottom"
-    android:background="@mipmap/drawer"
+    android:background="@mipmap/drawer2"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -65,7 +65,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:indeterminateTint="@color/white"/>
 
 
 
