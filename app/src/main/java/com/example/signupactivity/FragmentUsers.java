@@ -163,13 +163,18 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
             return;
         }
 
-        reference.child("portfolio_feedback").child(uID).setValue(feedback);
+        reference.child("Comments").child(uID).setValue(feedback);
 
     }
 
     @Override
     public void onClick(View v)
     {
-        handleFeedback();
+        switch (v.getId())
+        {
+            case R.id.portfolio_feedback_submit:
+                handleFeedback();
+                break;
+        }
     }
 }

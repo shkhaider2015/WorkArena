@@ -5,29 +5,22 @@
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/portfolio_feedback_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:text="@string/rating"
-        android:textSize="20sp"/>
+
 
     <EditText
         android:id="@+id/portfolio_feedback_feedback"
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:hint="@string/feedback"
-        app:layout_constraintTop_toBottomOf="@id/portfolio_feedback_rating"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:inputType="textMultiLine"
         android:autofillHints="@string/confirm"
         android:fontFamily="@font/harngton"
+
         android:gravity="top|left"
         android:minLines="3"
         android:maxLines="6"
