@@ -37,6 +37,13 @@
         app:layout_constraintTop_toTopOf="parent"
         >
 
+        <ImageView
+            android:src="@drawable/custom_launcher_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/image_view"
+            android:layout_gravity="center_horizontal"/>
+
 
 
         <EditText

@@ -142,7 +142,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             listView.setAdapter(listUsers);
 
                         }
-                    }, 3000);
+                    }, 1500);
 
 
                 }
@@ -171,7 +171,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             {
                 updateUINavHeader();
             }
-        }, 3000);
+        }, 1500);
 
 
         /*
@@ -383,6 +383,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         Log.d(TAG, "Equals: compare : " + data + " = " + profession);
 
                         String user_id = String.valueOf(dataSnapshot1.getKey());
+
+                        if(user_id.equals(String.valueOf(mAuth.getCurrentUser().getUid())))
+                        {
+                            continue;
+                        }
+
                         String name = String.valueOf(dataSnapshot1.child("full name").getValue());
                         String email = String.valueOf(dataSnapshot1.child("email").getValue());
 

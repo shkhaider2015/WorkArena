@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SignUpActivity</string>
+    <string name="app_name">Work Arena</string>
 
 
     <!-- Sign in .xml -->
@@ -86,6 +86,8 @@
     <string name="empty">Empty</string>
     <string name="wait">wait</string>
     <string name="submit">Submit</string>
+    <string name="comments">Comments</string>
+    <string name="Count">7</string>
 
     <!-- choose option -->
     <string name="profession_prompt">Choose Profession</string>
