@@ -40,14 +40,14 @@
 
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/frag_prof_pic"
-                        android:layout_width="120dp"
-                        android:layout_height="130dp"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
                         android:src="@drawable/person_black_18dp"
-                        app:civ_border_color="#EEEEEE"
-                        app:civ_border_width="4dp"
+                        app:civ_border_color="@color/full_dark"
+                        app:civ_border_width="3dp"
                         app:civ_shadow="true"
                         app:civ_shadow_radius="10"
-                        app:civ_shadow_color="#8BC34A"
+                        app:civ_shadow_color="@color/full_dark"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginStart="30dp"
@@ -72,7 +72,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="3dp"
                 android:background="@color/light_gray"/>
 
             <TableRow
@@ -88,7 +88,7 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:fontFamily="@font/harngton"
@@ -120,7 +120,7 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:fontFamily="@font/harngton"
@@ -152,7 +152,7 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:fontFamily="@font/harngton"
@@ -184,7 +184,7 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:fontFamily="@font/harngton"
@@ -216,7 +216,7 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:fontFamily="@font/harngton"
@@ -248,7 +248,7 @@
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:fontFamily="@font/harngton"

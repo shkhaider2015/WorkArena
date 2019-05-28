@@ -30,7 +30,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="3dp"
             android:background="@color/light_gray"/>
 
         <include
@@ -39,7 +39,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="3dp"
             android:background="@color/light_gray"/>
 
         <include

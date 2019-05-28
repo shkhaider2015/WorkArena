@@ -32,7 +32,8 @@
                 android:layout_height="60dp"
                 android:layout_gravity="start"
                 android:layout_marginStart="20dp"
-                android:contentDescription="@string/image_view"/>
+                android:contentDescription="@string/image_view"
+                android:background="@drawable/profile_image_border"/>
 
             <TextView
                 android:id="@+id/list_user_item_name"

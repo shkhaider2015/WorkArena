@@ -1,5 +1,6 @@
 package com.example.signupactivity;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class FragmentUsers extends Fragment implements View.OnClickListener {
+public class FragmentUsers extends Fragment implements View.OnClickListener , View.OnFocusChangeListener {
     private static final String TAG = "FragmentUsers";
 
     View V_header, V_description, V_personalInfo, V_feedback, V_Users_List;
@@ -44,7 +46,7 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
     ImageView H_profilePic; TextView H_fullName, H_profession;
     Button D_call; TextView D_userDescription, D_userCondition;
     TextView P_name, P_email, P_country, P_city, P_profession, P_companyName, U_comment_count;
-    Button F_submit; EditText F_feedback;
+    Button F_submit; EditText F_feedback, mHire;
     RatingBar mRatingBar;
     ListView U_list_users_comments;
 
@@ -104,6 +106,9 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
         U_comment_count = V_Users_List.findViewById(R.id.comment_count);
         U_list_users_comments = V_Users_List.findViewById(R.id.comment_list);
 
+        mHire = view.findViewById(R.id.hire);
+        mHire.setOnClickListener(this);
+
 
 
 
@@ -115,7 +120,7 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
                 updateUI();
                 mProgressBar.setVisibility(View.GONE);
             }
-        }, 5000);
+        }, 1500);
 
 
         F_submit.setOnClickListener(this);
@@ -131,7 +136,7 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(storageRef);
 
         reference.addValueEventListener(new ValueEventListener() {
-            @Override
+           @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 Log.d(TAG, "onDataChange: " + dataSnapshot);
@@ -175,11 +180,16 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
                 .placeholder(R.drawable.person_black_18dp)
                 .into(H_profilePic);
 
+                updateCommentsUI();
+
+    }
+
+    private void updateCommentsUI()
+    {
         ListComments listComments = new ListComments(getContext(), userCommentRecords);
         U_list_users_comments.setAdapter(listComments);
 
         U_comment_count.setText(String.valueOf(userCommentRecords.size()));
-
     }
 
     private void handleFeedback()
@@ -235,9 +245,21 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
         {
             case R.id.portfolio_feedback_submit:
                 handleFeedback();
+                getCommenterData();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                       updateCommentsUI();
+                    }
+                }, 2000);
                 break;
             case R.id.users_list_rating:
                 handleRating();
+                break;
+            case R.id.hire:
+                sendNotification();
                 break;
         }
     }
@@ -271,5 +293,26 @@ public class FragmentUsers extends Fragment implements View.OnClickListener {
 
                    }
                });
+    }
+
+    public void hideKeyboard(View view)
+    {
+        InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus)
+    {
+        if(!hasFocus)
+        {
+            hideKeyboard(v);
+        }
+
+    }
+
+    private void sendNotification()
+    {
+
     }
 }

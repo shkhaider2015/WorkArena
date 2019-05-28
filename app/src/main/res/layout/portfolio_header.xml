@@ -8,8 +8,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-
     <ImageView
         android:id="@+id/portfolio_header_profile_pic"
         android:layout_width="100dp"
@@ -19,6 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/person_black_18dp"
+        android:background="@drawable/profile_image_border"
         android:contentDescription="@string/image_view"/>
 
     <TextView
