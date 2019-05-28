@@ -232,6 +232,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             restoreValuesFromBundle(savedInstanceState);
             startLocationButtonClick();
 
+            Handler handler1 = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run()
+                {
+                    stopLocationUpdates();
+                }
+            }, 50000);
+
         }
 
         @Override
@@ -707,10 +716,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     .child("Location");
             location.child("latitude").setValue(mCurrentLocation.getLatitude());
             location.child("longitude").setValue(mCurrentLocation.getLongitude());
+
+            Toast.makeText(this, "Location uploaded", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "uploadLocation: mCurrent location is ready !!");
         }
         else
         {
-            Log.d(TAG, "uploadLocation: mCurrentLocation is null");
+            Log.d(TAG, "uploadLocation: mCurrentLocation is null cant uploaded");
         }
 
     }
