@@ -452,6 +452,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             String name = String.valueOf(dataSnapshot1.child("full name").getValue());
                             String email = String.valueOf(dataSnapshot1.child("email").getValue());
 
+                            double latitude = 0, longitude = 0;
+                            if(dataSnapshot1.child("Location").child("latitude").exists() && dataSnapshot1.child("Location").child("longitude").exists() )
+                            {
+                                latitude = (double) dataSnapshot1.child("Location").child("latitude").getValue();
+                                longitude = (double) dataSnapshot1.child("Location").child("longitude").getValue();
+
+                                Log.d(TAG, "onDataChange: latitude is : " +latitude + "Longitude is : " + longitude);
+                            }
+
+
                             StorageReference reference = FirebaseStorage.getInstance().getReference("profilepics/" + user_id + "/profilepicture.jpg");
                             reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
@@ -466,6 +476,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             model.setName(name);
                             model.setEmail(email);
                             model.setuID(user_id);
+                            if(latitude != 0 && longitude != 0 && mCurrentLocation != null)
+                            {
+                                Log.d(TAG, "onDataChange: Double is not equal to 0");
+                                model.setLocation(latitude, longitude, mCurrentLocation);
+                            }
+                            else
+                            {
+                                Location location = new Location("temp");
+                                location.setLatitude(24.886832);
+                                location.setLongitude(67.035789);
+                                model.setLocation(24.929587,  67.019509, location);
+                            }
+
 
                             users.add(model);
                         }

@@ -57,6 +57,23 @@
                 android:layout_toEndOf="@id/list_user_image"
                 android:layout_below="@id/list_user_item_name"/>
 
+            <TextView
+                android:text="@string/street_address"
+                android:textSize="10sp"
+                android:id="@+id/list_user_item_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/list_user_item_email"
+                android:layout_marginStart="30dp"
+                />
+            <TextView
+                android:text="@string/meter"
+                android:textSize="10sp"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/list_user_item_distance"/>
+
 
 
         </RelativeLayout>

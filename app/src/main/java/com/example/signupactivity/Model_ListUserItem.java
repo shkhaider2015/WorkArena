@@ -1,5 +1,6 @@
 package com.example.signupactivity;
 
+import android.location.Location;
 import android.net.Uri;
 
 public class Model_ListUserItem {
@@ -9,9 +10,12 @@ public class Model_ListUserItem {
     private String name;
     private String email;
     private Uri uri;
+    private Location location;
+    private Location currentUserLocation;
 
     public Model_ListUserItem()
     {
+        location = new Location("otherUser");
 
     }
 
@@ -45,5 +49,23 @@ public class Model_ListUserItem {
 
     public Uri getUri() {
         return uri;
+    }
+
+    public void setLocation(double latitude, double longitude, Location currentUserLocation)
+    {
+            this.currentUserLocation = currentUserLocation;
+            location.setLatitude(latitude);
+            location.setLongitude(longitude);
+
+
+
+    }
+
+    public double getDistance()
+    {
+        //double speedOfCar = 1000;
+        double distance = Math.round(location.distanceTo(currentUserLocation));
+        return distance;
+
     }
 }

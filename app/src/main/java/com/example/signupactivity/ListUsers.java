@@ -32,7 +32,7 @@ public class ListUsers extends BaseAdapter {
     private Context context;
     protected ArrayList<Model_ListUserItem> users;
     private String name = "", email = "";
-    TextView tname, temail;
+    TextView tname, temail, tdistance;
     ImageView profilePicture;
     Uri uri;
     LayoutInflater inflater;
@@ -73,9 +73,12 @@ public class ListUsers extends BaseAdapter {
         tname = convertView.findViewById(R.id.list_user_item_name);
         temail = convertView.findViewById(R.id.list_user_item_email);
         profilePicture = convertView.findViewById(R.id.list_user_image);
+        tdistance = convertView.findViewById(R.id.list_user_item_distance);
+
 
                 tname.setText(model.getName());
                 temail.setText(model.getEmail());
+                tdistance.setText(String.valueOf(model.getDistance()));
                 Picasso.get()
                         .load(model.getUri())
                         .placeholder(R.drawable.person_black_18dp)
