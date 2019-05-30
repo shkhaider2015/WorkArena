@@ -78,7 +78,7 @@ public class ListUsers extends BaseAdapter {
 
                 tname.setText(model.getName());
                 temail.setText(model.getEmail());
-                tdistance.setText(String.valueOf(model.getDistance()));
+                tdistance.setText(model.getDistance());
                 Picasso.get()
                         .load(model.getUri())
                         .placeholder(R.drawable.person_black_18dp)
