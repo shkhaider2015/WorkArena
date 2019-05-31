@@ -60,16 +60,14 @@ public class Model_ListUserItem {
             location.setLatitude(latitude);
             location.setLongitude(longitude);
 
-
-
     }
 
     public String getDistance()
     {
-        double speedOfCar = 60;
+        double speedOfCar = 300.77;
         double distance = Math.round(location.distanceTo(currentUserLocation) / speedOfCar);
         DecimalFormat decimalFormat = new DecimalFormat("0.#");
-        
+
 
         return decimalFormat.format(distance);
 

@@ -42,8 +42,7 @@
            android:layout_height="wrap_content"
            android:layout_alignTop="@id/spinner"
            android:layout_marginTop="50dp"
-           android:divider="@color/more_light_gray"
-           android:dividerHeight="7dp" />
+           android:dividerHeight="0dp"/>
 
 
        <ProgressBar

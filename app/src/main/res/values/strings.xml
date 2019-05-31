@@ -88,7 +88,7 @@
     <string name="submit">Submit</string>
     <string name="comments">Comments</string>
     <string name="Count">7</string>
-    <string name="meter">Meters</string>
+    <string name="minuts">Minuts</string>
 
     <!-- choose option -->
     <string name="profession_prompt">Choose Profession</string>

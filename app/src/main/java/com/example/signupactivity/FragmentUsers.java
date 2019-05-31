@@ -46,7 +46,7 @@ public class FragmentUsers extends Fragment implements View.OnClickListener , Vi
     ImageView H_profilePic; TextView H_fullName, H_profession;
     Button D_call; TextView D_userDescription, D_userCondition;
     TextView P_name, P_email, P_country, P_city, P_profession, P_companyName, U_comment_count;
-    Button F_submit; EditText F_feedback, mHire;
+    Button F_submit, mHire; EditText F_feedback;
     RatingBar mRatingBar;
     ListView U_list_users_comments;
 
