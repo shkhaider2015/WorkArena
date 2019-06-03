@@ -23,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static android.support.constraint.Constraints.TAG;
@@ -75,10 +76,13 @@ public class ListUsers extends BaseAdapter {
         profilePicture = convertView.findViewById(R.id.list_user_image);
         tdistance = convertView.findViewById(R.id.list_user_item_distance);
 
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+
+
 
                 tname.setText(model.getName());
                 temail.setText(model.getEmail());
-                tdistance.setText(model.getDistance());
+                tdistance.setText(decimalFormat.format(model.getDistance()));
                 Picasso.get()
                         .load(model.getUri())
                         .placeholder(R.drawable.person_black_18dp)

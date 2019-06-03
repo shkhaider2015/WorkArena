@@ -511,6 +511,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+        private ArrayList<Model_ListUserItem> sortArray(ArrayList<Model_ListUserItem> users)
+        {
+            Model_ListUserItem temp;
+            for(int i=0; i<users.size(); i++)
+            {
+                for(int j=1; j<(users.size() - i); j++)
+                {
+                    if(users.get(j-1).getDistance() > users.get(j).getDistance())
+                    {
+                        temp = users.get(j-1);
+                        //users.get(j-1) = users.get(j);
+                    }
+                }
+            }
+
+            return users;
+        }
+
 
 
         //-----------------------------
